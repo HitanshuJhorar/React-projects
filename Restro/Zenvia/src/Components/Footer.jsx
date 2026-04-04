@@ -1,71 +1,57 @@
-import "./Footer.css";
-import { Share2, Heart, Camera } from "lucide-react";
 
-export default function Footer() {
+import "./Footer.css";
+import { FaShareAlt, FaHeart, FaCamera } from "react-icons/fa";
+
+const Footer = () => {
   return (
     <footer className="footer">
-
-      <div className="footer-top">
-
+      <div className="footer-container">
+        
         {/* LEFT */}
-        <div className="footer-col">
-          <h2 className="footer-logo">LUXE<span>.</span></h2>
-
-          <p className="footer-desc">
+        <div className="footer-left">
+          <h2 className="logo">ZENVIA<span>.</span></h2>
+          <p>
             A modern dining destination for the visually driven generation.
             Crafting memories through taste and design.
           </p>
 
-          <div className="footer-icons">
-            <Share2 size={18} />
-            <Heart size={18} />
-            <Camera size={18} />
+          <div className="icons">
+            <FaShareAlt />
+            <FaHeart />
+            <FaCamera />
           </div>
         </div>
 
-        {/* HOURS */}
-        <div className="footer-col">
-          <h4 className="footer-heading">HOURS</h4>
-
-          <div className="footer-row">
-            <span>Mon — Thu</span>
-            <span>17:00 — 23:00</span>
-          </div>
-
-          <div className="footer-row highlight">
-            <span>Fri — Sat</span>
-            <span>17:00 — 01:00</span>
-          </div>
-
-          <div className="footer-row">
-            <span>Sunday</span>
-            <span>11:00 — 22:00</span>
+        {/* CENTER */}
+        <div className="footer-center">
+          <h4>HOURS</h4>
+          <div className="hours">
+            <p><span>Mon — Thu</span> <span>17:00 — 23:00</span></p>
+            <p><strong>Fri — Sat</strong> <strong>17:00 — 01:00</strong></p>
+            <p><span>Sunday</span> <span>11:00 — 22:00</span></p>
           </div>
         </div>
 
-        {/* LOCATION */}
-        <div className="footer-col">
-          <h4 className="footer-heading">LOCATION</h4>
-
+        {/* RIGHT */}
+        <div className="footer-right">
+          <h4>LOCATION</h4>
           <p>888 Design District</p>
-          <p>New York, NY 10013</p>
-
-          <p className="footer-phone">+1 (212) 555-0198</p>
-          <p className="footer-email">hello@luxe-dining.com</p>
+          <p>DELHI</p>
+          <p className="highlight">+91 xxxxxxxxx</p>
+          <p>hello@ZENVIA-dining.com</p>
         </div>
-
       </div>
 
       {/* BOTTOM */}
       <div className="footer-bottom">
-        <p>© 2024 LUXE RESTAURANT GROUP. ALL RIGHTS RESERVED.</p>
-
+        <p>© 2026 ZENVIA RESTAURANT GROUP. ALL RIGHTS RESERVED.</p>
         <div className="footer-links">
           <span>PRIVACY POLICY</span>
           <span>ACCESSIBILITY</span>
         </div>
       </div>
-
     </footer>
   );
-}
+};
+
+export default Footer;
