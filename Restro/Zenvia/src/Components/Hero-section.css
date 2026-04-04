@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+IE:wght@100..400&display=swap");
+
+/* ===== HERO CONTAINER ===== */
+.Hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
+  max-width: 100vw;
+  
+  /* margin: 80px auto; */
+  padding: 0 60px;
+  gap: 100px;
+  background: linear-gradient(
+        rgba(11, 11, 13, 0.75),
+        rgba(11, 11, 13, 0.9)
+    ),
+    url('/hero-bg.png');
+}
+
+/* ===== LEFT SIDE (TEXT) ===== */
+.hero-text {
+  margin: 60px 0;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+/* SMALL LABEL */
+.hero-quote {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+
+  color: rgb(242 204 143);
+  margin-bottom: 20px;
+}
+
+/* MAIN HEADINGS */
+.hero-star-text {
+  font-family: "Playfair Display";
+  font-size: 70px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* WHITE TEXT */
+.hero-star-text {
+  color: #f5f5f5;
+}
+
+/* ACCENT TEXT */
+.hero-star-text-red {
+  font-family: "Playwrite IE";
+  font-size: 70px;
+  line-height: 1.1;
+  margin: 0;
+  color: #e07a5f;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* PARAGRAPH */
+.hero-para {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  letter-spacing: 1px;
+  color: #a1a1aa;
+  font-weight: bold;
+
+  margin-top: 25px;
+  max-width: 420px;
+}
+
+/* ===== BUTTON GROUP ===== */
+.hero-text button {
+  margin-top: 30px;
+  margin-right: 15px;
+}
+
+/* PRIMARY BUTTON (you already have base, refining here) */
+.btn-primary-hero {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+
+  padding: 12px 22px;
+
+  color: #e07a5f;
+  font-weight: bold;
+  border: 1px solid #e07a5f;
+  background: transparent;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-hero:hover {
+  background: #e07a5f;
+  color: #fbfbff;
+}
+
+/* SECONDARY BUTTON */
+.btn-Secondary {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+
+  padding: 12px 22px;
+  font-weight: bold;
+  color: rgb(242 204 143);
+  border: 1px solid rgb(242 204 143);
+  background: transparent;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-Secondary:hover {
+  background: rgb(242 204 143);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* ===== RIGHT SIDE (IMAGE) ===== */
+.hero-img {
+  margin: 60px 0;
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* IMAGE STYLING */
+.hero-img img {
+  width: 100%;
+  min-width: 480px;
+  max-height: 620px;
+  border-radius: 6px;
+
+  /* subtle depth */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 768px) {
+
+  /* ===== HERO CONTAINER ===== */
+  .Hero-container {
+    position: relative;
+    height: 100vh;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* ===== IMAGE BACKGROUND ===== */
+  .hero-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ===== DARK OVERLAY ===== */
+  .Hero-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+  }
+
+  /* ===== TEXT WRAPPER ===== */
+  .hero-text {
+    position: relative;
+    z-index: 2;
+
+    height: 100%;
+    width: 100%;
+    max-width: 400px;
+
+    margin: 0 auto;
+    padding: 40px 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+    text-align: center;
+  }
+
+  /* ===== HEADING BLOCK ===== */
+  .hero-star {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-star-text,
+  .hero-star-text-red {
+    font-size: 2rem !important;
+    line-height: 1.2;
+  }
+
+  /* ===== PARAGRAPH ===== */
+  .hero-para {
+    font-size: 0.95rem;
+    margin: 15px 0;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn-primary-hero,
+  .btn-Secondary {
+    width: 40%;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn-Secondary {
+    opacity: 0.8;
+  }
+
+  .btn-primary-hero {
+    margin-top: 15px;
+  }
+}

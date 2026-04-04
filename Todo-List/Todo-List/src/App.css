@@ -1,0 +1,207 @@
+/* Main App Container */
+.app {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  background: var(--bg);
+  font-family: var(--sans);
+}
+
+/* Header */
+.app h1 {
+  text-align: center;
+  color: var(--text-h);
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+/* Todo Input Form */
+.todo-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.todo-input input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: var(--sans);
+  color: var(--text-h);
+  background: var(--bg);
+  transition: all 0.3s ease;
+}
+
+.todo-input input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.todo-input input::placeholder {
+  color: var(--text);
+}
+
+.todo-input button {
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.todo-input button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(170, 59, 255, 0.3);
+}
+
+.todo-input button:active {
+  transform: translateY(0);
+}
+
+/* Todo List */
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Individual Todo Item */
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.todo-item:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.todo-item label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  cursor: pointer;
+  color: var(--text-h);
+}
+
+.todo-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--accent);
+  border-radius: 4px;
+}
+
+.todo-item span {
+  font-size: 1rem;
+  color: var(--text-h);
+  transition: all 0.3s ease;
+  word-break: break-word;
+}
+
+.todo-item span.completed {
+  text-decoration: line-through;
+  color: var(--text);
+  opacity: 0.6;
+}
+
+/* Delete Button */
+.delete-btn {
+  padding: 8px 16px;
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.delete-btn:hover {
+  background: #ff3838;
+  transform: scale(1.05);
+}
+
+.delete-btn:active {
+  transform: scale(0.98);
+}
+
+/* Empty State */
+.Empty {
+  text-align: center;
+  color: var(--text);
+  font-size: 1.1rem;
+  padding: 40px 20px;
+  font-style: italic;
+}
+
+/* Stats Section */
+.stats {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  background: var(--accent-bg);
+  border-radius: 8px;
+  border: 2px solid var(--accent-border);
+}
+
+.stats span {
+  color: var(--text-h);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .app {
+    padding: 15px;
+  }
+
+  .app h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .todo-input {
+    flex-direction: column;
+  }
+
+  .todo-input button {
+    width: 100%;
+  }
+
+  .delete-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

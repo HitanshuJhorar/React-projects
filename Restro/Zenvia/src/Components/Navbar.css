@@ -1,0 +1,230 @@
+/* ===== NAVBAR BASE ===== */
+.Navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 150px;
+    max-width: 100vw;
+    margin: 0 auto;
+
+    background-color: #121212;
+    border-bottom: 0.9px solid #4d4d51;
+
+    
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* ===== LOGO ===== */
+/* LOGO WRAPPER */
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+/* LOGO TEXT */
+.logo {
+    font-family: 'Playfair Display';
+    font-size: 24px;
+    font-weight: bolder;
+
+    color: #F5F5F5;
+    text-decoration: none;
+
+    letter-spacing: 1px;
+
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* SUBTLE HOVER EFFECT */
+.logo:hover {
+    color: #E07A5F;
+    cursor: pointer;
+}
+
+/* UNDERLINE ACCENT (PREMIUM TOUCH) */
+.logo::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    width: 0%;
+    height: 1px;
+    background: #E07A5F;
+
+    transition: width 0.3s ease;
+}
+
+.logo:hover::after {
+    width: 100%;
+}
+/* ===== NAV LINKS CONTAINER ===== */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+/* ===== NAV LINKS ===== */
+.links {
+    font-family: 'poppins';
+    font-size: 12px;
+    color: #A1A1AA;
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+/* HOVER TEXT COLOR */
+.links:hover {
+    color: #E07A5F;
+    cursor: pointer;
+}
+
+/* UNDERLINE ANIMATION */
+.links::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+
+    width: 0%;
+    height: 1px;
+    background: #E07A5F;
+
+    transition: width 0.3s ease;
+}
+
+.links:hover::after {
+    width: 100%;
+}
+
+/* ===== BUTTON WRAPPER ===== */
+.nav-btn {
+    display: flex;
+    align-items: center;
+}
+
+/* ===== BUTTON ===== */
+.btn-primary {
+    position: relative;
+    overflow: hidden;
+
+    font-family: 'poppins';
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    font-weight: bold;
+    padding: 10px 20px;
+
+    color: #E07A5F;
+    border: 1px solid #E07A5F;
+    background: transparent;
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover{
+    color: #F5F5F5;
+    background-color: #E07A5F;
+    transition: 0.3s ease;
+}
+/* TEXT LAYER */
+.btn-primary span {
+    
+    position: relative;
+    z-index: 2;
+}
+
+
+.btn-primary:hover::before {
+    width: 100%;
+}
+
+/* TEXT COLOR CHANGE */
+.btn-primary:hover span {
+    color: #0B0B0D;
+}
+
+/* SLIGHT SCALE FOR PREMIUM FEEL */
+.btn-primary:hover {
+    transform: scale(1.05);
+}
+
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.mobile-btn {
+  display: none;
+}
+/* MOBILE */
+@media (max-width: 768px) {
+  
+  .Navbar-container {
+    padding: 20px 30px;
+  }
+
+  /* HAMBURGER SHOW */
+  .hamburger {
+    display: block;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  /* HIDE DESKTOP BUTTON */
+  .nav-btn {
+    display: none;
+  }
+
+  /* SIDE MENU BASE */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+
+    width: 75%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 40px 30px;
+    gap: 25px;
+
+    background-color: #121212;
+
+    transition: right 0.4s ease;
+    z-index: 1000;
+  }
+
+  /* ACTIVE → SLIDE IN */
+  .nav-links.active {
+    right: 0;
+  }
+
+  /* LINKS */
+  .links {
+    font-size: 1.2rem;
+  }
+
+  /* MOBILE BUTTON */
+  .mobile-btn {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+  }
+}
