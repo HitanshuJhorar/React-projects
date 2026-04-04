@@ -1,7 +1,8 @@
 import { useState } from "react";
-import emailjs from "emailjs-com";
-import "./Booking.css"
+import emailjs from "@emailjs/browser";
+import "./Booking.css";
 import Navbar from "../Components/Navbar";
+
 export default function BookingPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -13,94 +14,128 @@ export default function BookingPage() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [status, setStatus] = useState(""); // success | error
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔥 VALIDATION
-    if (!formData.name || !formData.email || !formData.date || !formData.time) {
-      alert("Please fill all required fields");
+    // ✅ Better validation
+    if (!formData.name.trim() || !formData.email.trim()) {
+      setStatus("error");
       return;
     }
 
     setLoading(true);
+    setStatus("");
 
-    emailjs
-      .send(
+    try {
+      await emailjs.send(
         "YOUR_SERVICE_ID",
         "YOUR_TEMPLATE_ID",
         formData,
         "YOUR_PUBLIC_KEY"
-      )
-      .then(() => {
-        setSuccess(true);
-        setLoading(false);
-      })
-      .catch(() => {
-        alert("Failed to send. Try again.");
-        setLoading(false);
+      );
+
+      setStatus("success");
+      setFormData({
+        name: "",
+        email: "",
+        date: "",
+        time: "",
+        guests: "",
+        message: "",
       });
+    } catch (err) {
+      setStatus("error");
+    }
+
+    setLoading(false);
   };
 
   return (
-     <>
-     <Navbar />
-      <div className="booking-container">
-      <h1>Reserve Your Table</h1>
+    <>
+      <Navbar />
 
-      <form onSubmit={handleSubmit} className="booking-form">
+      <div className="booking-wrapper">
+        <div className="booking-container">
+          
+          {/* LEFT SIDE */}
+          <div className="booking-info">
+            <h1>Reserve Your Table</h1>
+            <p>
+              Experience fine dining like never before. Book your table and let
+              the night unfold with elegance.
+            </p>
+          </div>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          onChange={handleChange}
-        />
+          {/* FORM */}
+          <form onSubmit={handleSubmit} className="booking-form">
+            
+            <div className="input-group">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          onChange={handleChange}
-        />
+            <div className="input-group">
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+              />
+              <input
+                type="time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+              />
+            </div>
 
-        <input
-          type="date"
-          name="date"
-          onChange={handleChange}
-        />
+            <input
+              type="number"
+              name="guests"
+              placeholder="Guests"
+              value={formData.guests}
+              onChange={handleChange}
+            />
 
-        <input
-          type="time"
-          name="time"
-          onChange={handleChange}
-        />
+            <textarea
+              name="message"
+              placeholder="Special Request"
+              value={formData.message}
+              onChange={handleChange}
+            />
 
-        <input
-          type="number"
-          name="guests"
-          placeholder="Guests"
-          onChange={handleChange}
-        />
+            <button type="submit" disabled={loading}>
+              {loading ? "Sending..." : "Reserve Now"}
+            </button>
 
-        <textarea
-          name="message"
-          placeholder="Special Request"
-          onChange={handleChange}
-        />
-
-        <button type="submit">
-          {loading ? "Sending..." : "Reserve Now"}
-        </button>
-
-        {success && <p>✅ Booking request sent!</p>}
-      </form>
-    </div>
-     </>
+            {/* STATUS */}
+            {status === "success" && (
+              <p className="success-msg">✅ Booking request sent!</p>
+            )}
+            {status === "error" && (
+              <p className="error-msg">❌ Something went wrong</p>
+            )}
+          </form>
+        </div>
+      </div>
+    </>
   );
 }
