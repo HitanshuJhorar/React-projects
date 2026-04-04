@@ -34,10 +34,10 @@ export default function BookingPage() {
 
     try {
       await emailjs.send(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        "service_o22hrk9",
+        "template_w17rb99",
         formData,
-        "YOUR_PUBLIC_KEY"
+        "14Nj2DHQe4Gdf8orm"
       );
 
       setStatus("success");
