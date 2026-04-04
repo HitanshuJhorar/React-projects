@@ -20,7 +20,8 @@ export default function HeroSection() {
           </div>
 
           <p className="hero-para">
-            An elevated journey where every sense is ignited.
+            An elevated journey where every sense is ignited. Refined tastes,
+            captivating ambiance. Pure indulgence.
           </p>
 
           <button
