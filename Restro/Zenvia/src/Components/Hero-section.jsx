@@ -34,7 +34,7 @@ export default function HeroSection() {
           </button>
         </div>
         <div className="hero-img">
-          <img src="\public\hero-img.png" alt="Restro image" />
+          <img src="/hero-img.png" alt="Restro image" />
         </div>
       </div>
     </section>
