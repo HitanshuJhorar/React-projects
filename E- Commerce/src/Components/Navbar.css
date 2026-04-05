@@ -160,7 +160,7 @@
 /* MOBILE MENU DRAWER */
 .mobile-menu {
   position: fixed;
-  top: 90px;
+  top: 93px;
   right: -100%;
   width: 70%;
   height: calc(100vh - 80px);
