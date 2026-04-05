@@ -1,13 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Playwrite+IE:wght@100..400&display=swap");
 
+
+
 /* ===== HERO CONTAINER ===== */
 .Hero-container {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  
-  max-width: 100vw;
-  
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   /* margin: 80px auto; */
   padding: 0 60px;
   gap: 100px;
@@ -133,32 +135,35 @@
 
 /* IMAGE STYLING */
 .hero-img img {
-  width: 100%;
-  min-width: 480px;
-  max-height: 620px;
-  border-radius: 6px;
+ width: 100%;
+  height: 100%;
+  object-fit: cover;
 
+  min-width: 0;     /* 💥 MUST */
+  max-width: 100%;  /* 💥 MUST */
+  display: block;   /* 💥 removes inline gap issues */
   /* subtle depth */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 @media (max-width: 768px) {
 
-  /* ===== HERO CONTAINER ===== */
   .Hero-container {
-    position: relative;
-    height: 100vh;
-    padding: 0;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 0 !important; 
+    background: none !important;
+    width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   }
 
-  /* ===== IMAGE BACKGROUND ===== */
   .hero-img {
-    position: absolute;
-    top: 0;
-    left: 0;
+    order: 1;
     width: 100%;
-    height: 100%;
+    height: 55vh;
+    margin: 0;
   }
 
   .hero-img img {
@@ -167,59 +172,33 @@
     object-fit: cover;
   }
 
-  /* ===== DARK OVERLAY ===== */
-  .Hero-container::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    z-index: 1;
-  }
-
-  /* ===== TEXT WRAPPER ===== */
   .hero-text {
-    position: relative;
-    z-index: 2;
+    order: 2;
+    margin-top: -70px;
 
-    height: 100%;
+    background: #121212;
+    border-radius: 20px 20px 0 0;
+
+    padding: 30px 20px;
     width: 100%;
-    max-width: 400px;
-
-    margin: 0 auto;
-    padding: 40px 20px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
 
     text-align: center;
-  }
-
-  /* ===== HEADING BLOCK ===== */
-  .hero-star {
-    display: flex;
-    flex-direction: column;
     align-items: center;
   }
 
   .hero-star-text,
   .hero-star-text-red {
     font-size: 2rem !important;
-    line-height: 1.2;
   }
 
-  /* ===== PARAGRAPH ===== */
   .hero-para {
     font-size: 0.95rem;
-    margin: 15px 0;
   }
 
-  /* ===== BUTTONS ===== */
   .btn-primary-hero,
   .btn-Secondary {
-    width: 40%;
-    margin-top: 10px;
+    width: 80%;
+    max-width: 250px;
   }
 }
 
@@ -228,7 +207,82 @@
     opacity: 0.8;
   }
 
+
   .btn-primary-hero {
     margin-top: 15px;
   }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  .Hero-container {
+    flex-direction: column;
+    padding: 0;
+    background: none;
+  }
+
+  /* IMAGE TOP */
+  .hero-img {
+    width: 100%;
+    height: 60vh;
+  }
+
+  .hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* TEXT BELOW IMAGE */
+  .hero-text {
+    margin-top: -100px; /* overlap */
+    background: #121212;
+    padding: 40px 30px;
+    border-radius: 20px;
+
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
+  }
+
+  /* HEADINGS */
+  .hero-star-text,
+  .hero-star-text-red {
+    font-size: 3rem;
+  }
+
+  /* PARA */
+  .hero-para {
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 20px auto;
+  }
+
+  /* BUTTONS */
+  .btn-primary-hero,
+  .btn-Secondary {
+    width: 60%;
+    max-width: 300px;
+  }
+
+}
+
+@media (max-width: 1280px) {
+
+  .Hero-container {
+    padding: 0 40px;
+    gap: 60px;
+  }
+
+  .hero-star-text,
+  .hero-star-text-red {
+    font-size: 50px;
+  }
+
+  .hero-img img {
+    max-height: 500px;
+  }
+
 }

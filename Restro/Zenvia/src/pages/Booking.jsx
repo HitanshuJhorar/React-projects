@@ -93,15 +93,19 @@ export default function BookingPage() {
             </div>
 
             <div className="input-group">
+              <label htmlFor="date">Date :-</label>
               <input
                 type="date"
                 name="date"
+                id="date"
                 value={formData.date}
                 onChange={handleChange}
               />
+              <label htmlFor="time">Time :-</label>
               <input
                 type="time"
                 name="time"
+                id="time"
                 value={formData.time}
                 onChange={handleChange}
               />

@@ -40,6 +40,10 @@
   flex-direction: column;
   gap: 15px;
 }
+.input-group label{
+  margin-left: 10px;
+  color: white;
+}
 
 .input-group {
   display: flex;

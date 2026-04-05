@@ -16,6 +16,7 @@ export default function CTASection() {
       <button onClick={() => navigate("/booking")} className="cta-btn">RESERVE YOUR TABLE</button>
 
       <span className="cta-span">BESPOKE TABLE SERVICE INCLUDED</span>
-    </div></div>
+    </div>
+    </div>
   );
 }

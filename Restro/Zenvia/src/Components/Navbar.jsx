@@ -1,14 +1,43 @@
 import { Link as ScrollLink } from "react-scroll";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useEffect,useRef } from "react";
 import "./Navbar.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const isHome = location.pathname === "/";
-
+  const menuRef = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
+
+ useEffect(() => {
+  function handleClickOutside(e) {
+    if (!menuRef.current) return;
+
+    // agar click menu ke andar hai → kuch mat kar
+    if (menuRef.current.contains(e.target)) return;
+
+    // warna close
+    setMenuOpen(false);
+  }
+
+  if (menuOpen) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [menuOpen]);
+
+  useEffect(() => {
+  if (menuOpen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
+}, [menuOpen]);
 
   return (
     <nav className="Navbar-container">
@@ -31,7 +60,7 @@ export default function Navbar() {
       </div>
 
       {/* LINKS */}
-      <div className={`nav-links ${menuOpen ? "active" : ""}`}>
+      <div  ref={menuRef} className={`nav-links ${menuOpen ? "active" : ""}`}>
         {/* CLOSE BUTTON (TOP RIGHT) */}
         <div className="mobile-top">
           <span className="close-btn" onClick={() => setMenuOpen(false)}>
