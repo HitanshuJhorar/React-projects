@@ -12,7 +12,6 @@ export default function Navbar() {
 
   return (
     <nav className="Navbar-container">
-
       {/* LOGO */}
       <div className="nav-logo">
         {isHome ? (
@@ -33,46 +32,79 @@ export default function Navbar() {
 
       {/* LINKS */}
       <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-
-        {isHome ? (
-          <>
-            <ScrollLink to="our-story" className="links" onClick={()=>setMenuOpen(false)}>OUR STORY</ScrollLink>
-            <ScrollLink to="menu" className="links" onClick={()=>setMenuOpen(false)}>MENU</ScrollLink>
-            <ScrollLink to="experience" className="links" onClick={()=>setMenuOpen(false)}>EXPERIENCE</ScrollLink>
-            <ScrollLink to="reviews" className="links" onClick={()=>setMenuOpen(false)}>REVIEWS</ScrollLink>
-          </>
-        ) : (
-          <span className="links" onClick={() => {
-            navigate("/");
-            setMenuOpen(false);
-          }}>
-            HOME
+        {/* CLOSE BUTTON (TOP RIGHT) */}
+        <div className="mobile-top">
+          <span className="close-btn" onClick={() => setMenuOpen(false)}>
+            ✕
           </span>
-        )}
+        </div>
 
-        {/* MOBILE BUTTON */}
-        <button
-          className="btn-primary mobile-btn"
-          onClick={() => {
-            navigate("/booking");
-            setMenuOpen(false);
-          }}
-        >
-          RESERVE YOUR TABLE
-        </button>
+        {/* NAV LINKS */}
+        <div className="mobile-links">
+          {isHome ? (
+            <>
+              <ScrollLink
+                to="our-story"
+                className="links"
+                onClick={() => setMenuOpen(false)}
+              >
+                OUR STORY
+              </ScrollLink>
+              <ScrollLink
+                to="menu"
+                className="links"
+                onClick={() => setMenuOpen(false)}
+              >
+                MENU
+              </ScrollLink>
+              <ScrollLink
+                to="experience"
+                className="links"
+                onClick={() => setMenuOpen(false)}
+              >
+                EXPERIENCE
+              </ScrollLink>
+              <ScrollLink
+                to="reviews"
+                className="links"
+                onClick={() => setMenuOpen(false)}
+              >
+                REVIEWS
+              </ScrollLink>
+            </>
+          ) : (
+            <span
+              className="links"
+              onClick={() => {
+                navigate("/");
+                setMenuOpen(false);
+              }}
+            >
+              HOME
+            </span>
+          )}
+        </div>
 
+        {/* CTA BUTTON (BOTTOM FIXED FEEL) */}
+        <div className="mobile-bottom">
+          <button
+            className="btn-primary mobile-btn"
+            onClick={() => {
+              navigate("/booking");
+              setMenuOpen(false);
+            }}
+          >
+            RESERVE YOUR TABLE
+          </button>
+        </div>
       </div>
 
       {/* DESKTOP BUTTON */}
       <div className="nav-btn">
-        <button
-          className="btn-primary"
-          onClick={() => navigate("/booking")}
-        >
+        <button className="btn-primary" onClick={() => navigate("/booking")}>
           RESERVE YOUR TABLE
         </button>
       </div>
-
     </nav>
   );
 }
