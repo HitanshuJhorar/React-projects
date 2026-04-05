@@ -131,6 +131,7 @@
 .hamburger {
   display: none;
   flex-direction: column;
+  margin-top: 1rem;
   cursor: pointer;
   gap: 5px;
 }
