@@ -136,12 +136,12 @@
 /* IMAGE STYLING */
 .hero-img img {
  width: 100%;
-  height: 100%;
+  max-height: 80vh;
   object-fit: cover;
 
   min-width: 0;     /* 💥 MUST */
   max-width: 100%;  /* 💥 MUST */
-  display: block;   /* 💥 removes inline gap issues */
+  display: block;   
   /* subtle depth */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
