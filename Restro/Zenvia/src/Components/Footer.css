@@ -89,82 +89,129 @@
 /* ========================= */
 
 @media (max-width: 768px) {
-
   .footer {
-    padding: 40px 20px;
+    padding: 60px 24px 30px; /* Add breathing room */
   }
 
   .footer-container {
     flex-direction: column;
-    gap: 35px;
+    gap: 40px;
+    align-items: center;
+    text-align: center; /* Center align for premium mobile feel */
   }
 
-  /* Better spacing */
   .footer-left,
   .footer-center,
   .footer-right {
     width: 100%;
-  }
-
-  /* Logo thoda compact */
-  .logo {
-    font-size: 24px;
-  }
-
-  /* Text readability */
-  .footer-left p {
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  /* Hours layout fix */
-  .hours p {
-    font-size: 14px;
-  }
-
-  /* Icons thoda spaced */
-  .icons {
-    margin-top: 10px;
-  }
-
-  /* Bottom section stack */
-  .footer-bottom {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 11px;
+    align-items: center;
+  }
+
+  /* Elegant Dividers on mobile */
+  .footer-center,
+  .footer-right {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 35px;
+  }
+
+  .logo {
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
+
+  .footer-left p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 20px 0;
+    max-width: 320px;
+  }
+
+  .icons {
+    justify-content: center;
+    margin-top: 10px;
+    gap: 25px;
+    font-size: 20px;
+    color: #e07a5f; /* Accent color */
+  }
+
+  .footer-center h4,
+  .footer-right h4 {
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+  }
+
+  /* Stack hours elegantly */
+  .hours {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .hours p {
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+  }
+
+  .hours span {
+    color: #888;
+  }
+
+  .hours strong {
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-right p {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .highlight {
+    margin: 15px 0 !important;
+    font-size: 0.95rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  /* Bottom Stack */
+  .footer-bottom {
+    flex-direction: column-reverse; /* Links above copyright */
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    padding-top: 30px;
+    margin-top: 50px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .footer-bottom p {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    color: #555;
+    line-height: 1.8;
   }
 
   .footer-links {
-    gap: 20px;
+    flex-direction: row;
+    gap: 30px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: #888;
   }
 }
 
-/* ========================= */
-/* 📱 EXTRA SMALL DEVICES */
-/* ========================= */
-
 @media (max-width: 480px) {
-
   .footer {
-    padding: 30px 15px;
-  }
-
-  .logo {
-    font-size: 22px;
+    padding: 50px 16px 20px;
   }
 
   .footer-left p {
-    font-size: 13px;
-  }
-
-  .hours p {
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .footer-links {
-    flex-direction: column;
-    gap: 5px;
+    font-size: 0.85rem;
   }
 }

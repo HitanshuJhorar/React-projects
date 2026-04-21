@@ -1,6 +1,6 @@
 function MenuCard({ category, items }) {
   return (
-    <article className="card menu-card">
+    <article className="card menu-card menu-card--compact">
       <h3>{category}</h3>
       <ul>
         {items.map((item) => (

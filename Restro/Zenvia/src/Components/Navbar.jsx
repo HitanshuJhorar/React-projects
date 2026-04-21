@@ -11,33 +11,34 @@ export default function Navbar() {
   const menuRef = useRef();
   const [menuOpen, setMenuOpen] = useState(false);
 
- useEffect(() => {
-  function handleClickOutside(e) {
-    if (!menuRef.current) return;
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (!menuRef.current) return;
 
-    // agar click menu ke andar hai → kuch mat kar
-    if (menuRef.current.contains(e.target)) return;
+      // Ignore if clicking inside the menu or clicking the hamburger icon itself
+      if (menuRef.current.contains(e.target) || e.target.closest(".hamburger")) {
+        return;
+      }
 
-    // warna close
-    setMenuOpen(false);
-  }
+      setMenuOpen(false);
+    }
 
-  if (menuOpen) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
 
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [menuOpen]);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
-  if (menuOpen) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
-  }
-}, [menuOpen]);
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [menuOpen]);
 
   return (
     <nav className="Navbar-container">
@@ -54,20 +55,16 @@ export default function Navbar() {
         )}
       </div>
 
+      {/* OVERLAY FOR MOBILE MENU */}
+      <div className={`menu-overlay ${menuOpen ? "active" : ""}`} onClick={() => setMenuOpen(false)}></div>
+
       {/* 🍔 HAMBURGER */}
-      <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
+      <div className="hamburger" onClick={() => setMenuOpen((prev) => !prev)}>
         {menuOpen ? "✕" : "☰"}
       </div>
 
       {/* LINKS */}
       <div  ref={menuRef} className={`nav-links ${menuOpen ? "active" : ""}`}>
-        {/* CLOSE BUTTON (TOP RIGHT) */}
-        <div className="mobile-top">
-          <span className="close-btn" onClick={() => setMenuOpen(false)}>
-            ✕
-          </span>
-        </div>
-
         {/* NAV LINKS */}
         <div className="mobile-links">
           {isHome ? (

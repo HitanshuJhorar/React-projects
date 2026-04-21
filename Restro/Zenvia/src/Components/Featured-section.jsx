@@ -18,7 +18,7 @@ export default function FeaturedSection() {
     <div className="featured-container" id="menu">
       <h3 className="featured-sub-title">SIGNATURE SERIES</h3>
       <h1 className="featured-title">Featured Dishes</h1>
-      <div className="menu-container">
+      <div className={`menu-container ${!showAll ? "collapsed" : ""}`}>
         {visibleitems.map((item) => (
           <div className="card" key={item.id}>
             <img src={item.image} alt="" loading="lazy" className="menu-dish-image" />

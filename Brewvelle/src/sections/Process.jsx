@@ -4,31 +4,39 @@ import SectionTitle from '../components/ui/SectionTitle'
 
 const steps = [
   {
-    title: 'Source',
-    text: 'We partner with roasters who can trace every bean back to thoughtful farms.',
+    title: 'Sourcing',
+    text: 'Ethically sourced beans from single-origin farms.',
+    image:
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuAk0xnt-Pj5ePxEG97tCjgNYJ8JE5y6hAaW85hNcuMR8Ds6yyCelHnwQlubFhhTaWXhSGKbNjfg0eZd_eJqXSXhaH-j42tAXBwK5FUsmTUU74A83Dd1gvQ67mHDwjepETTO7xOwzAKj51QCL6kq8iNv-zb9M0EGJ-Gnb6tp3s7prCBkImg8OxlieFDAbFdbffVZkcJ9A80aY2SvCh8SR8nCrJl673KCqb5nR5JiPcx2RLAJ2U-b0maRiSzdMVEETglIM73W2ZS-Gwg',
   },
   {
-    title: 'Brew',
-    text: 'Each cup is dialed in for balance, sweetness, and a finish that lingers softly.',
+    title: 'Roasting',
+    text: 'Small-batch roasting for peak flavor profile.',
+    image:
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuBAoccR3cAeyM7eHumNFGt1eS62pap4wkisXzwNX_VYnKFXWe8XPeHynPiLfbxHtNOutariI3uWsRuTmu4UtM37CMthCBWJ1rQ3bWBM6RBNwOfv0xn9QIeQBuRjZTu0Lk5NsPp5D7hf8_ifjte4CO_s7yyCFLIin3aydXjf1s2rZWBp04I6tKSXWHaj7Fhvon2iourhOSRJW-lXTiPZEnv6rNYx4U-z39AXKRZR7cEp1I-K2F9dZp8R-IcvpJZyDjAxi5662NSR41U',
   },
   {
-    title: 'Serve',
-    text: 'From ceramic mugs to takeaway cups, everything is designed to feel intentional.',
+    title: 'Brewing',
+    text: 'Precision brewing for the perfect cup.',
+    image:
+      'https://lh3.googleusercontent.com/aida-public/AB6AXuCqVYaNU_w1Y7MEtIBmxk4PydIbo7LDQzsB1OANdmplOp9gI0TkBMYnHYeLvbdLEdhM8omzQSbyq09l6Rvw-bKFrMsgjMd6HukAsZzhxLQuBNgmaqn7wzL6gdfFZWIOn5FbCCCygLNyftu9NYZ2CnqR4jZ5AiHfRM_1Qr9RpYolXuEqY1irhFo1KomMM3fMzarF94WHQuU-NRlMHtc1eYGB3zze8WUk0umqeD4oaG3WuSvYWj18tCJuHFrmqVvk3aqGSog_dhUoR5I',
   },
 ]
 
 function Process() {
   return (
     <section className="section" id="process">
-      <Container>
-        <SectionTitle
-          eyebrow="Our approach"
-          title="From bean to cup, every step stays personal."
-          description="A simple process built around quality, warmth, and consistency."
-        />
-        <div className="grid grid--three">
+      <Container className="panel panel--process">
+        <SectionTitle title="Our Process" align="center" />
+        <div className="process-grid">
           {steps.map((step) => (
-            <InfoCard key={step.title} title={step.title} text={step.text} />
+            <InfoCard
+              key={step.title}
+              title={step.title}
+              text={step.text}
+              image={step.image}
+              className="process-card"
+            />
           ))}
         </div>
       </Container>

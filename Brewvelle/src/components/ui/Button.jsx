@@ -1,5 +1,12 @@
-function Button({ children, variant = 'primary', href, className = '', ...props }) {
-  const classes = `btn btn--${variant} ${className}`.trim()
+function Button({
+  children,
+  variant = 'primary',
+  size = 'md',
+  href,
+  className = '',
+  ...props
+}) {
+  const classes = `btn btn--${variant} btn--${size} ${className}`.trim()
 
   if (href) {
     return (
