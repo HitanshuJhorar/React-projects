@@ -33,7 +33,11 @@ function App() {
       window.history.replaceState({}, '', `/${MENU_PAGE_HASH}`)
     }
 
-    if (window.location.hash && view === 'home') {
+    if (view === 'menu') {
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      })
+    } else if (window.location.hash && view === 'home') {
       const id = window.location.hash.replace('#', '')
       const element = document.getElementById(id)
 
@@ -90,6 +94,12 @@ function App() {
       window.history.pushState({}, '', nextUrl)
       setView(isNextMenuPage ? 'menu' : 'home')
       setPageStage('entered')
+
+      if (isNextMenuPage || (!nextHash && nextPathname === '/')) {
+        window.requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+        })
+      }
     }, 180)
   }
 
