@@ -729,6 +729,61 @@ a {
 
 .featured-products {
   gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.featured-products > * {
+  display: flex;
+}
+
+.featured-product-card {
+  min-height: 100%;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 28px rgba(62, 39, 35, 0.06);
+}
+
+.featured-product-card .tasting-card__visual {
+  height: 10.25rem;
+  background: #f3ede6;
+}
+
+.featured-product-card .tasting-card__visual img {
+  object-fit: cover;
+  padding: 0;
+}
+
+.featured-product-card .tasting-card__body {
+  padding: 1rem 0.95rem 1rem;
+}
+
+.featured-product-card .tasting-card__row {
+  display: block;
+  min-height: 0;
+  margin-bottom: 0.65rem;
+}
+
+.featured-product-card h3 {
+  max-width: none;
+  margin-bottom: 0.35rem;
+  font-size: 1.08rem;
+  line-height: 1.12;
+}
+
+.featured-product-card strong {
+  display: inline-block;
+  font-size: 0.98rem;
+}
+
+.featured-product-card p {
+  min-height: 0;
+  margin-bottom: 0.8rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.featured-product-card .pill {
+  margin-top: auto;
 }
 
 .tasting-card {
@@ -830,18 +885,185 @@ a {
   color: var(--muted);
 }
 
+.menu-page__hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+.menu-page__hero-btn {
+  min-height: 2.75rem;
+  min-width: 10.5rem;
+}
+
+.menu-page__category-bar-wrap {
+  position: sticky;
+  top: 5.35rem;
+  z-index: 30;
+  margin-bottom: 1.4rem;
+  padding-block: 0.7rem 0.35rem;
+  background: linear-gradient(180deg, rgba(248, 247, 245, 0.96) 0%, rgba(248, 247, 245, 0.9) 70%, rgba(248, 247, 245, 0) 100%);
+  backdrop-filter: blur(16px);
+}
+
+.menu-page__category-bar {
+  display: flex;
+  gap: 0.8rem;
+  overflow-x: auto;
+  padding: 0.8rem 0.9rem;
+  border-radius: 1.5rem;
+  background: rgba(233, 238, 241, 0.78);
+  border: 1px solid rgba(224, 214, 203, 0.7);
+  box-shadow: 0 14px 28px rgba(62, 39, 35, 0.05);
+  scrollbar-width: none;
+}
+
+.menu-page__category-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-page__category-pill {
+  flex: 0 0 auto;
+  min-width: max-content;
+  padding: 0.78rem 1.15rem;
+  min-height: 2.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(62, 39, 35, 0.12);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 14px 28px rgba(62, 39, 35, 0.06);
+  transition: transform var(--duration-base) var(--easing-base), background-color var(--duration-base) var(--easing-base), color var(--duration-base) var(--easing-base), border-color var(--duration-base) var(--easing-base), box-shadow var(--duration-base) var(--easing-base);
+}
+
+.menu-page__category-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(62, 39, 35, 0.22);
+}
+
+.menu-page__category-pill--active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: 0 16px 30px rgba(62, 39, 35, 0.18);
+}
+
 .menu-page__section {
   padding-bottom: 0;
 }
 
 .panel--menu-page {
-  padding-top: 3.25rem;
-  padding-bottom: 3.25rem;
+  padding-top: 2.7rem;
+  padding-bottom: 3rem;
 }
 
+.menu-page__sections {
+  display: grid;
+  gap: 2.4rem;
+}
+
+.menu-category {
+  scroll-margin-top: 10.5rem;
+  padding-bottom: 2.4rem;
+  border-bottom: 1px solid rgba(224, 214, 203, 0.8);
+}
+
+.menu-category:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.menu-category__header {
+  max-width: 34rem;
+  margin-bottom: 1.5rem;
+}
+
+.menu-category__eyebrow {
+  margin: 0 0 0.65rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--soft-muted);
+  font-weight: 600;
+}
+
+.menu-category h2 {
+  margin: 0;
+  font-family: 'Newsreader', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.98;
+  font-weight: 400;
+}
+
+.menu-category__description {
+  margin: 0.8rem 0 0;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.menu-category__grid,
 .featured-products--full {
+  display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+.menu-item-card {
+  min-height: 100%;
+  border-radius: 1.6rem;
+  box-shadow: 0 14px 30px rgba(62, 39, 35, 0.06);
+}
+
+.menu-item-card .tasting-card__visual {
+  aspect-ratio: 16 / 9;
+  height: auto;
+  background: #efe9e2;
+}
+
+.menu-item-card .tasting-card__visual img {
+  object-fit: cover;
+  padding: 0;
+}
+
+.menu-item-card .tasting-card__body {
+  padding: 0.95rem;
+}
+
+.menu-item-card .tasting-card__row {
+  display: block;
+  margin-bottom: 0.7rem;
+  min-height: 0;
+}
+
+.menu-item-card h3 {
+  margin-bottom: 0.45rem;
+  max-width: none;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.menu-item-card strong {
+  display: inline-block;
+  font-size: 0.95rem;
+}
+
+.menu-item-card p {
+  margin-bottom: 0.9rem;
+  min-height: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.menu-item-card .pill {
+  margin-top: auto;
 }
 
 .find-us-layout {
@@ -1061,6 +1283,10 @@ a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .menu-category__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .site-footer__inner--exact {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1109,6 +1335,26 @@ a {
 
   .featured-products--full {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .menu-category__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .menu-item-card .tasting-card__visual {
+    height: 10.5rem;
+  }
+
+  .menu-item-card .tasting-card__body {
+    padding: 1.15rem 1.1rem 1.2rem;
+  }
+
+  .menu-item-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .menu-item-card p {
+    font-size: 0.82rem;
   }
 
   .site-footer__bottom {
@@ -1709,6 +1955,31 @@ a {
     height: 100%;
   }
 
+  .featured-product-card {
+    min-height: 0;
+  }
+
+  .featured-product-card .tasting-card__visual {
+    height: 9rem;
+  }
+
+  .featured-product-card .tasting-card__body {
+    padding: 0.82rem 0.82rem 0.88rem;
+  }
+
+  .featured-product-card h3 {
+    font-size: 1.02rem;
+  }
+
+  .featured-product-card strong {
+    font-size: 0.92rem;
+  }
+
+  .featured-product-card p {
+    font-size: 0.76rem;
+    line-height: 1.4;
+  }
+
   .tasting-card {
     border-radius: 1.45rem;
     min-height: 23rem;
@@ -1789,7 +2060,7 @@ a {
     margin-right: 0;
     padding-right: 0;
     padding-left: 0;
-    gap: 1rem;
+    gap: 0.85rem;
   }
 
   .menu-page {
@@ -1816,6 +2087,117 @@ a {
     margin-top: 0.9rem;
     font-size: 0.88rem;
     line-height: 1.55;
+  }
+
+  .menu-page__hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  .menu-page__hero-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.85rem;
+  }
+
+  .menu-page__category-bar-wrap {
+    top: 4.25rem;
+    margin-bottom: 1rem;
+    padding-block: 0.45rem 0.2rem;
+  }
+
+  .menu-page__category-bar {
+    gap: 0.6rem;
+    padding: 0.65rem 0.7rem;
+    border-radius: 1.2rem;
+  }
+
+  .menu-page__category-pill {
+    padding: 0.68rem 0.92rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    min-height: 2.5rem;
+  }
+
+  .panel--menu-page {
+    padding-top: 1.6rem;
+    padding-bottom: 1.8rem;
+  }
+
+  .menu-page__sections {
+    gap: 1.7rem;
+  }
+
+  .menu-category {
+    scroll-margin-top: 8.6rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .menu-category__header {
+    margin-bottom: 1rem;
+  }
+
+  .menu-category__eyebrow {
+    font-size: 0.66rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .menu-category h2 {
+    font-size: clamp(1.8rem, 7vw, 2.4rem);
+  }
+
+  .menu-category__description {
+    margin-top: 0.6rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .menu-category__grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .menu-item-card {
+    min-height: 0;
+    border-radius: 1.2rem;
+  }
+
+  .menu-item-card .tasting-card__visual {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .menu-item-card .tasting-card__body {
+    padding: 0.82rem 0.82rem 0.9rem;
+    min-height: 0;
+  }
+
+  .menu-item-card .tasting-card__row {
+    margin-bottom: 0.5rem;
+  }
+
+  .menu-item-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.32rem;
+    -webkit-line-clamp: initial;
+  }
+
+  .menu-item-card strong {
+    font-size: 0.94rem;
+  }
+
+  .menu-item-card p {
+    display: block;
+    margin-bottom: 0.7rem;
+    font-size: 0.82rem;
+    line-height: 1.48;
+  }
+
+  .menu-item-card .pill {
+    font-size: 0.5rem;
+    padding: 0.22rem 0.5rem;
   }
 
   .find-us-layout {

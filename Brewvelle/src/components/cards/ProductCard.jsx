@@ -1,8 +1,8 @@
-function ProductCard({ title, description, price, badge, image }) {
+function ProductCard({ title, description, price, badge, image, className = '', ...props }) {
   return (
-    <article className="card tasting-card">
+    <article className={`card tasting-card ${className}`.trim()} {...props}>
       <div className="tasting-card__visual">
-        <img alt={title} src={image} />
+        <img alt={title} decoding="async" loading="lazy" src={image} />
       </div>
       <div className="tasting-card__body">
         <div className="tasting-card__row">

@@ -34,7 +34,7 @@ function Menu() {
         <div className="featured-products">
           {featuredDrinks.map((item, i) => (
             <div className="reveal-up" style={{'--delay': `${i * 100 + 200}ms`}} key={item.title}>
-              <ProductCard {...item} />
+              <ProductCard className="featured-product-card" {...item} />
             </div>
           ))}
         </div>
