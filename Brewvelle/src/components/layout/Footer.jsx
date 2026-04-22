@@ -37,6 +37,7 @@ function Footer() {
       </Container>
       <Container className="site-footer__bottom">
         <p>(c) 2024 Brewvelle. All rights reserved.</p>
+        <p style={{ fontSize: '1.2rem', fontWeight: '500', color: 'var(--brand-color, inherit)' }}>Made by Hitanshu</p>
         <div>
           <a href="#footer">Privacy</a>
           <a href="#footer">Terms</a>
