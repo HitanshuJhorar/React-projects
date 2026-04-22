@@ -37,10 +37,10 @@ function Navbar({ isMenuPage, navigate }) {
           </nav>
           
           <Button
-            href={isMenuPage ? '/' : '/menu'}
+            href={isMenuPage ? '/' : '/#menu-page'}
             size="sm"
             className="nav-cta"
-            onClick={(event) => handleClick(event, isMenuPage ? '/' : '/menu')}
+            onClick={(event) => handleClick(event, isMenuPage ? '/' : '/#menu-page')}
           >
             {isMenuPage ? 'Home' : 'Order Now'}
           </Button>
@@ -79,10 +79,10 @@ function Navbar({ isMenuPage, navigate }) {
           </nav>
           <div style={{'--delay': `${links.length * 80 + 100}ms`}} className={`mobile-cta-wrap ${menuOpen ? 'revealed' : ''}`}>
             <Button
-              href={isMenuPage ? '/' : '/menu'}
+              href={isMenuPage ? '/' : '/#menu-page'}
               size="md"
               className="mobile-cta"
-              onClick={(event) => handleClick(event, isMenuPage ? '/' : '/menu')}
+              onClick={(event) => handleClick(event, isMenuPage ? '/' : '/#menu-page')}
             >
               {isMenuPage ? 'Home' : 'Order Now'}
             </Button>
@@ -94,4 +94,3 @@ function Navbar({ isMenuPage, navigate }) {
 }
 
 export default Navbar
-

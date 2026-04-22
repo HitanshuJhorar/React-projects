@@ -25,7 +25,7 @@ function Menu() {
             <p>{featuredSpotlight.description}</p>
             <div className="menu-spotlight__actions">
               <Button size="sm">Order Now</Button>
-              <Button href="/menu" variant="secondary" size="sm">
+              <Button href="/#menu-page" variant="secondary" size="sm">
                 View Full Menu
               </Button>
             </div>
@@ -39,7 +39,7 @@ function Menu() {
           ))}
         </div>
         <div className="menu-footer-action reveal-up" style={{'--delay': '400ms'}}>
-          <Button href="/menu" variant="secondary" size="sm">
+          <Button href="/#menu-page" variant="secondary" size="sm">
             Browse Full Menu
           </Button>
         </div>

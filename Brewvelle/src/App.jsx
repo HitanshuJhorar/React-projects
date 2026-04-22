@@ -4,13 +4,23 @@ import Navbar from './components/layout/Navbar'
 import Home from './pages/Home'
 import MenuPage from './pages/MenuPage'
 
+const MENU_PAGE_HASH = '#menu-page'
+
+const getCurrentView = () => {
+  if (window.location.pathname === '/menu' || window.location.hash === MENU_PAGE_HASH) {
+    return 'menu'
+  }
+
+  return 'home'
+}
+
 function App() {
-  const [pathname, setPathname] = useState(window.location.pathname)
+  const [view, setView] = useState(getCurrentView)
   const [pageStage, setPageStage] = useState('entered')
 
   useEffect(() => {
     const handleNavigation = () => {
-      setPathname(window.location.pathname)
+      setView(getCurrentView())
     }
 
     window.addEventListener('popstate', handleNavigation)
@@ -19,7 +29,11 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (window.location.hash && pathname === '/') {
+    if (window.location.pathname === '/menu') {
+      window.history.replaceState({}, '', `/${MENU_PAGE_HASH}`)
+    }
+
+    if (window.location.hash && view === 'home') {
       const id = window.location.hash.replace('#', '')
       const element = document.getElementById(id)
 
@@ -31,30 +45,37 @@ function App() {
     } else if (!window.location.hash) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
-  }, [pathname])
+  }, [view])
 
-  const isMenuPage = pathname === '/menu'
+  const isMenuPage = view === 'menu'
 
   const navigate = (href) => {
     const url = new URL(href, window.location.origin)
     const nextPathname = url.pathname
     const nextHash = url.hash
+    const isNextMenuPage = nextPathname === '/menu' || nextHash === MENU_PAGE_HASH
+    const nextUrl = isNextMenuPage
+      ? `/${MENU_PAGE_HASH}`
+      : nextHash
+        ? `/${nextHash}`
+        : '/'
     const currentUrl = `${window.location.pathname}${window.location.hash}`
-    const nextUrl = `${nextPathname}${nextHash}`
 
     if (currentUrl === nextUrl) {
-      if (nextHash) {
+      if (nextHash && nextHash !== MENU_PAGE_HASH) {
         const element = document.getElementById(nextHash.replace('#', ''))
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
+      } else if (isNextMenuPage) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
       } else {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
       return
     }
 
-    if (nextPathname === pathname && nextHash) {
+    if (!isMenuPage && nextPathname === '/' && nextHash && nextHash !== MENU_PAGE_HASH) {
       window.history.pushState({}, '', nextUrl)
       const element = document.getElementById(nextHash.replace('#', ''))
       if (element) {
@@ -67,7 +88,7 @@ function App() {
 
     window.setTimeout(() => {
       window.history.pushState({}, '', nextUrl)
-      setPathname(nextPathname)
+      setView(isNextMenuPage ? 'menu' : 'home')
       setPageStage('entered')
     }, 180)
   }
