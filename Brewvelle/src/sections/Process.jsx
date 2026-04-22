@@ -1,6 +1,7 @@
 import InfoCard from '../components/cards/InfoCard'
 import Container from '../components/ui/Container'
 import SectionTitle from '../components/ui/SectionTitle'
+import useReveal from '../hooks/useReveal'
 
 const steps = [
   {
@@ -24,19 +25,23 @@ const steps = [
 ]
 
 function Process() {
+  const revealRef = useReveal()
   return (
-    <section className="section" id="process">
+    <section className="section" id="process" ref={revealRef}>
       <Container className="panel panel--process">
-        <SectionTitle title="Our Process" align="center" />
+        <div className="reveal-up" style={{'--delay': '0ms'}}>
+          <SectionTitle title="Our Process" align="center" />
+        </div>
         <div className="process-grid">
-          {steps.map((step) => (
-            <InfoCard
-              key={step.title}
-              title={step.title}
-              text={step.text}
-              image={step.image}
-              className="process-card"
-            />
+          {steps.map((step, i) => (
+            <div className="reveal-scale" style={{'--delay': `${i * 120 + 200}ms`}} key={step.title}>
+              <InfoCard
+                title={step.title}
+                text={step.text}
+                image={step.image}
+                className="process-card"
+              />
+            </div>
           ))}
         </div>
       </Container>

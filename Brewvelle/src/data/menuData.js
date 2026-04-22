@@ -1,3 +1,5 @@
+import signatureLatteImage from '../assets/images/signature-latte.png'
+
 export const featuredDrinks = [
   {
     title: 'Salted Caramel Cold Brew',
@@ -30,8 +32,7 @@ export const featuredSpotlight = {
   price: '$7.50',
   description:
     'Our house-roasted espresso pulled ristretto, gently folded into velvety steamed oat milk. Infused with local wildflower honey and organic lavender petals for a deeply soothing, aromatic finish.',
-  image:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuDhIEYRUOcjN7GTmxpLhjJFrUlnchdOan_k4dWoT0cnhYeVL2NfTZaEiD8zJHdbIJFrYd-LlxyKefifnGSdbh7x0tDYt-0pXDVvXCDeN3UfTlGXfAaqycIX0Ro8wJiOO_ThWA9CpWIHm364ZhPTVB1sR7h9fs-ej8MFHYN1EfSYYC5ka7zj9ThqWTLc2P_92XRTmlpsBjROU1FM9Z0ojgKCaTnLXWDCKlhshliD-NwBZNmdYrnIvb1AOaDMW91U98DckI7XYTRzxUs',
+  image: signatureLatteImage,
 }
 
 export const menuGroups = []

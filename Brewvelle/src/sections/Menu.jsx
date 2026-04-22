@@ -3,13 +3,17 @@ import Button from '../components/ui/Button'
 import Container from '../components/ui/Container'
 import SectionTitle from '../components/ui/SectionTitle'
 import { featuredDrinks, featuredSpotlight } from '../data/menuData'
+import useReveal from '../hooks/useReveal'
 
 function Menu() {
+  const revealRef = useReveal()
   return (
-    <section className="section" id="menu">
+    <section className="section" id="menu" ref={revealRef}>
       <Container className="panel panel--menu">
-        <SectionTitle eyebrow="Curated offerings" title="Tasting Notes" align="center" />
-        <div className="menu-spotlight">
+        <div className="reveal-up" style={{'--delay': '0ms'}}>
+          <SectionTitle eyebrow="Curated offerings" title="Tasting Notes" align="center" />
+        </div>
+        <div className="menu-spotlight reveal-up" style={{'--delay': '120ms'}}>
           <div className="menu-spotlight__visual">
             <img alt={featuredSpotlight.title} src={featuredSpotlight.image} />
           </div>
@@ -28,11 +32,13 @@ function Menu() {
           </article>
         </div>
         <div className="featured-products">
-          {featuredDrinks.map((item) => (
-            <ProductCard key={item.title} {...item} />
+          {featuredDrinks.map((item, i) => (
+            <div className="reveal-up" style={{'--delay': `${i * 100 + 200}ms`}} key={item.title}>
+              <ProductCard {...item} />
+            </div>
           ))}
         </div>
-        <div className="menu-footer-action">
+        <div className="menu-footer-action reveal-up" style={{'--delay': '400ms'}}>
           <Button href="/menu" variant="secondary" size="sm">
             Browse Full Menu
           </Button>

@@ -1,9 +1,9 @@
 import Button from '../components/ui/Button'
 import Container from '../components/ui/Container'
+import signatureLatteImage from '../assets/images/signature-latte.png'
 
 const heroImages = {
-  latte:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuDYmmO_Un0m2D5QOVn7dRnWwVzlBC7B5dWjfEECJQWlveJnKU05Zi3Z7bfXWfmPMDyFppz7YiUetlRXP3Ng0AqH07ey8qbLtr7tDvnmO0kYOyC0t3sfdSCbZ-zDu3UK7-ULzc7gujHKoSADFImUNvLA0gDNWxzEyhlDX_630hr0hcLn2cs1h4g_98Vx3WAA9iYss8u0J-UWlRdlcsn78uYPtlCFo7_eZcjEADmfCc5W2X7dfCHDlE5PO71FOzIBXM-omoO4Re3Flok',
+  latte: signatureLatteImage,
   beans:
     'https://lh3.googleusercontent.com/aida-public/AB6AXuAk0xnt-Pj5ePxEG97tCjgNYJ8JE5y6hAaW85hNcuMR8Ds6yyCelHnwQlubFhhTaWXhSGKbNjfg0eZd_eJqXSXhaH-j42tAXBwK5FUsmTUU74A83Dd1gvQ67mHDwjepETTO7xOwzAKj51QCL6kq8iNv-zb9M0EGJ-Gnb6tp3s7prCBkImg8OxlieFDAbFdbffVZkcJ9A80aY2SvCh8SR8nCrJl673KCqb5nR5JiPcx2RLAJ2U-b0maRiSzdMVEETglIM73W2ZS-Gwg',
 }
@@ -12,6 +12,13 @@ function Hero() {
   return (
     <section className="hero-section" id="home">
       <Container className="hero-section__grid">
+        <div className="hero-mobile-visual">
+          <img
+            alt="Lavender latte with intricate latte art in a ceramic cup."
+            src={heroImages.latte}
+          />
+          <div className="hero-mobile-visual__overlay"></div>
+        </div>
         <div className="hero-copy">
           <p className="hero-section__kicker">
             Est. 2024 <span>&bull;</span> Portland

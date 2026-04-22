@@ -1,6 +1,7 @@
 import InfoCard from '../components/cards/InfoCard'
 import Button from '../components/ui/Button'
 import Container from '../components/ui/Container'
+import useReveal from '../hooks/useReveal'
 
 const details = [
   {
@@ -21,27 +22,33 @@ const details = [
 ]
 
 function FindUs() {
+  const revealRef = useReveal()
   return (
-    <section className="section" id="find-us">
+    <section className="section" id="find-us" ref={revealRef}>
       <Container className="find-us-layout">
         <div className="find-us-copy">
-          <h2 className="find-us-title">Find Us</h2>
+          <div className="reveal-fade" style={{'--delay': '0ms'}}>
+            <h2 className="find-us-title">Find Us</h2>
+          </div>
           <div className="find-us-list">
-            {details.map((detail) => (
-              <InfoCard
-                key={detail.title}
-                title={detail.title}
-                text={detail.text}
-                meta={detail.meta}
-                className="location-card"
-              />
+            {details.map((detail, i) => (
+              <div className="reveal-fade" style={{'--delay': `${i * 100 + 120}ms`}} key={detail.title}>
+                <InfoCard
+                  title={detail.title}
+                  text={detail.text}
+                  meta={detail.meta}
+                  className="location-card"
+                />
+              </div>
             ))}
           </div>
-          <Button href="#find-us" size="sm">
-            Get Directions
-          </Button>
+          <div className="reveal-fade" style={{'--delay': '450ms'}}>
+            <Button href="#find-us" size="sm">
+              Get Directions
+            </Button>
+          </div>
         </div>
-        <div className="map-frame">
+        <div className="map-frame reveal-fade" style={{'--delay': '200ms'}}>
           <img
             alt="Minimalist street map of Portland"
             className="map-frame__image"
