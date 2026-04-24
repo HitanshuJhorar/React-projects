@@ -1,0 +1,4 @@
+/* App-specific styles go here - use Tailwind for most styling */
+main {
+  flex: 1;
+}
