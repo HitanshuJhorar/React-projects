@@ -7,11 +7,7 @@ import { fadeUp, staggerContainer, subtleReveal } from "../../utils/motion";
 function CTA() {
   return (
     <section className="relative overflow-hidden bg-[#0b0b0b]">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-35"
-        style={{ backgroundImage: "url('/reference/home/footer-bg.png')" }}
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,11,11,0.84),rgba(11,11,11,0.94))]" />
+
 
       <div className="relative px-6 pb-10 pt-20 md:px-10 lg:px-12">
         <div className="mx-auto max-w-[1320px]">
