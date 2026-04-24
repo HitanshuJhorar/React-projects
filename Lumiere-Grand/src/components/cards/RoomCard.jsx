@@ -66,7 +66,7 @@ function RoomCard({
             src={image}
             alt={title}
             loading="lazy"
-            className="interaction-image h-52 w-full rounded-t-xl object-cover sm:h-56 md:h-[260px]"
+            className="interaction-image w-full rounded-t-xl object-cover object-bottom aspect-[5/4]"
           />
           <div className="interaction-image-overlay" />
         </div>
@@ -103,7 +103,7 @@ function RoomCard({
           src={image}
           alt={title}
           loading="lazy"
-          className="interaction-image h-52 w-full rounded-t-xl object-cover sm:h-56 md:h-[270px]"
+          className="interaction-image h-52 w-full rounded-t-xl object-cover object-bottom sm:h-56 md:h-[270px]"
         />
         <div className="interaction-image-overlay" />
       </div>
