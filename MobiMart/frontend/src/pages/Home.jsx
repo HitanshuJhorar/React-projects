@@ -1,41 +1,11 @@
-import { useEffect, useState } from "react";
 import Hero from "../components/home/Hero";
 import Services from "../components/home/Services";
 import Featured from "../components/home/Featured";
 import WhyChoose from "../components/home/WhyChoose";
-import { getProducts } from "../services/productAPI";
+import { useStorefrontProducts } from "../storefront/useStorefrontProducts";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadProducts = async () => {
-      try {
-        const data = await getProducts();
-        if (isMounted) {
-          setProducts(data);
-        }
-      } catch (fetchError) {
-        if (isMounted) {
-          setError(fetchError.response?.data?.message || "Unable to load products right now.");
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    loadProducts();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const { products, error, isLoading } = useStorefrontProducts();
 
   return (
     <div className="pt-20 sm:pt-24">

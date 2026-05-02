@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { FaCheckCircle } from "react-icons/fa";
-import whyChooseImage from "../../assets/why-choose-mobi.jpeg";
+import whyChooseImage from "../../assets/mobi-why.png";
 
 const points = [
   "Wide range of latest & pre-owned smartphones",

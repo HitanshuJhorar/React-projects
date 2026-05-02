@@ -1,7 +1,7 @@
 import ProductCard from "../ui/ProductCard";
-import Spinner from "../ui/Spinner";
 import StatusMessage from "../ui/StatusMessage";
 import { buildWhatsAppHref } from "../../data/storeInfo";
+import ProductCardSkeleton from "../ui/ProductCardSkeleton";
 
 const Featured = ({ products, error, isLoading }) => {
   const featuredEmptyWhatsappHref = buildWhatsAppHref(
@@ -23,9 +23,11 @@ const Featured = ({ products, error, isLoading }) => {
 
         <StatusMessage message={error} tone="error" className="mb-5" />
 
-        {isLoading ? (
-          <div className="rounded-2xl border border-slate-200 bg-white px-6 py-12 shadow-sm">
-            <Spinner label="Loading featured products..." size="lg" />
+        {isLoading && products.length === 0 ? (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))}
           </div>
         ) : !error && products.length === 0 ? (
           <div className="mm-empty-state">
@@ -45,7 +47,7 @@ const Featured = ({ products, error, isLoading }) => {
             </a>
           </div>
         ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mm-fade-in-grid grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

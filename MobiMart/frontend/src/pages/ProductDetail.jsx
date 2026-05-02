@@ -14,7 +14,8 @@ import {
   storeAddressLines,
 } from "../data/storeInfo";
 import { formatINR } from "../utils/currency";
-import { getProductById, getProducts } from "../services/productAPI";
+import { getProductById } from "../services/productAPI";
+import { useStorefrontProducts } from "../storefront/useStorefrontProducts";
 
 const buyingReasons = [
   { icon: FiCheckCircle, title: "Tested Devices", text: "Every phone is checked before it reaches you." },
@@ -24,13 +25,13 @@ const buyingReasons = [
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const { products: storefrontProducts } = useStorefrontProducts();
   const [product, setProduct] = useState(null);
-  const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [selectedStorage, setSelectedStorage] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageOverride, setSelectedImageOverride] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -39,20 +40,13 @@ export default function ProductDetail() {
       try {
         setIsLoading(true);
         setError("");
-
-        const [productData, allProducts] = await Promise.all([
-          getProductById(id),
-          getProducts(),
-        ]);
+        const productData = await getProductById(id);
 
         if (!isMounted) {
           return;
         }
 
         setProduct(productData);
-        setRecommendedProducts(
-          allProducts.filter((item) => String(item._id || item.id) !== String(id)).slice(0, 4),
-        );
         setSelectedStorage(productData.variants?.[0]?.storage ?? null);
         setSelectedColor(productData.variants?.[0]?.color ?? null);
       } catch (loadError) {
@@ -75,6 +69,12 @@ export default function ProductDetail() {
     };
   }, [id]);
 
+  const recommendedProducts = useMemo(() => {
+    return storefrontProducts
+      .filter((item) => String(item._id || item.id) !== String(id))
+      .slice(0, 4);
+  }, [id, storefrontProducts]);
+
   const images = useMemo(() => {
     if (!product) return [];
     if (Array.isArray(product.images) && product.images.length > 0) {
@@ -83,9 +83,10 @@ export default function ProductDetail() {
     return product.image ? [product.image] : [];
   }, [product]);
 
-  useEffect(() => {
-    setSelectedImage(images[0] ?? null);
-  }, [images]);
+  const selectedImage =
+    selectedImageOverride && images.includes(selectedImageOverride)
+      ? selectedImageOverride
+      : (images[0] ?? null);
 
   const storages = product?.variants
     ? [...new Set(product.variants.map((variant) => variant.storage))]
@@ -174,7 +175,7 @@ export default function ProductDetail() {
           <ProductGallery
             images={images}
             selectedImage={selectedImage}
-            onSelectImage={setSelectedImage}
+            onSelectImage={setSelectedImageOverride}
             productName={product.name}
           />
 

@@ -2,7 +2,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { FiArrowUpRight } from "react-icons/fi";
 import {
+  buildBusinessWhatsAppHref,
   buildWhatsAppHref,
+  businessPhone,
+  businessPhoneHref,
   googleMapsHref,
   storeAddressLines,
   storePhone,
@@ -11,6 +14,10 @@ import { viewportOnce } from "../../utils/animations";
 
 const footerWhatsappHref = buildWhatsAppHref(
   "Hi, I want to know more about your store and available phones.",
+);
+
+const footerBusinessWhatsappHref = buildBusinessWhatsAppHref(
+  "Hi, I want to connect for a business-related inquiry.",
 );
 
 export default function Footer() {
@@ -82,15 +89,33 @@ export default function Footer() {
             <ul className="mt-3 space-y-2 text-white/70">
               <li>{storePhone}</li>
               <li>Chat on WhatsApp</li>
+              <li className="pt-2 text-white">Business Contact</li>
+              <li>
+                <a
+                  href={businessPhoneHref}
+                  className="transition hover:text-white hover:underline"
+                >
+                  {businessPhone}
+                </a>
+              </li>
               {storeAddressLines.map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
             <a
+              href={footerBusinessWhatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-400/15 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-400/25"
+            >
+              <FaWhatsapp aria-hidden="true" />
+              Business Chat
+            </a>
+            <a
               href={googleMapsHref}
               target="_blank"
               rel="noreferrer"
-              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/15"
+              className="mt-3 inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/15"
             >
               Open in Maps
             </a>

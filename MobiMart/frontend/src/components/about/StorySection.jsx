@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa";
 import { buildWhatsAppHref } from "../../data/storeInfo";
 import { viewportOnce } from "../../utils/animations";
+import ourStoryImage from "../../assets/mobi-our-story.jpeg";
 
 const imageIn = {
   hidden: { opacity: 0, scale: 0.96 },
@@ -17,47 +18,6 @@ const whatsappHref = buildWhatsAppHref(
   "Hi, I want to know more about your store.",
 );
 
-function StoreMock() {
-  return (
-    <div className="mm-card-dark relative overflow-hidden rounded-3xl p-6 sm:p-7">
-      <div className="absolute inset-0 bg-[radial-gradient(480px_240px_at_40%_10%,rgba(34,183,170,0.20),transparent_62%)]" />
-
-      <div className="relative">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-[12px] font-semibold tracking-wide text-white/65">
-              Mobi Mart
-            </p>
-            <p className="mt-1 text-sm font-medium text-white/85">
-              Experience Center
-            </p>
-          </div>
-          <div className="h-8 w-20 rounded-full bg-white/10 ring-1 ring-white/10" />
-        </div>
-
-        <div className="mt-6 grid grid-cols-5 gap-2">
-          {Array.from({ length: 25 }).map((_, i) => (
-            <div
-              key={i}
-              className="h-9 rounded-xl bg-white/5 ring-1 ring-white/10"
-            />
-          ))}
-        </div>
-
-        <div className="mt-7 rounded-2xl bg-white/8 p-4 ring-1 ring-white/10">
-          <div className="flex items-end justify-between">
-            <div className="space-y-2">
-              <div className="h-3 w-36 rounded bg-white/15" />
-              <div className="h-3 w-44 rounded bg-white/10" />
-            </div>
-            <div className="h-10 w-24 rounded-2xl bg-white/12 ring-1 ring-white/10" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function StorySection() {
   const reduceMotion = useReducedMotion();
 
@@ -71,7 +31,13 @@ export default function StorySection() {
             viewport={viewportOnce}
             variants={imageIn}
           >
-            <StoreMock />
+            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white p-3 shadow-[0_20px_50px_rgba(15,23,42,0.12)]">
+              <img
+                src={ourStoryImage}
+                alt="Customers visiting the Mobi Mart store"
+                className="h-full min-h-[320px] w-full rounded-[20px] object-cover"
+              />
+            </div>
           </motion.div>
 
           <motion.div

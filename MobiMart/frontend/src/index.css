@@ -99,6 +99,21 @@
     @apply rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center;
   }
 
+  .mm-shimmer {
+    background: linear-gradient(
+      110deg,
+      rgba(226, 232, 240, 0.7) 8%,
+      rgba(248, 250, 252, 0.95) 18%,
+      rgba(226, 232, 240, 0.7) 33%
+    );
+    background-size: 200% 100%;
+    animation: mm-shimmer 1.2s linear infinite;
+  }
+
+  .mm-fade-in-grid {
+    animation: mm-fade-in 0.35s ease-out both;
+  }
+
   .mm-cta-primary {
     @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(15,23,42,0.24)] transition-all duration-300 hover:scale-[1.03] hover:bg-emerald-800 hover:shadow-[0_22px_48px_rgba(6,95,70,0.28)] focus-visible:ring-2 focus-visible:ring-emerald-700/40 active:scale-[0.99];
   }
@@ -108,10 +123,47 @@
   }
 }
 
+@keyframes mm-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes mm-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mm-bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+
+  40% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

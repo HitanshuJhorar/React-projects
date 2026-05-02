@@ -3,11 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { FiSliders } from "react-icons/fi";
 import Filters from "../components/shop/Filters";
 import ProductGrid from "../components/shop/ProductGrid";
-import Spinner from "../components/ui/Spinner";
 import StatusMessage from "../components/ui/StatusMessage";
 import { buildWhatsAppHref } from "../data/storeInfo";
 import { formatINR } from "../utils/currency";
-import { getProducts } from "../services/productAPI";
+import { useStorefrontProducts } from "../storefront/useStorefrontProducts";
 
 function getLowestPrice(product) {
   if (!Array.isArray(product.variants) || product.variants.length === 0) {
@@ -43,41 +42,12 @@ const defaultFilters = {
 };
 
 const Shop = () => {
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const { products, error, isLoading } = useStorefrontProducts();
   const [filters, setFilters] = useState(defaultFilters);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const emptyStateWhatsappHref = buildWhatsAppHref(
     "Hi, I could not find the phone I was looking for on the website. Can you help me?",
   );
-
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadProducts = async () => {
-      try {
-        const data = await getProducts();
-        if (isMounted) {
-          setProducts(data);
-        }
-      } catch (fetchError) {
-        if (isMounted) {
-          setError(fetchError.response?.data?.message || "Unable to load products right now.");
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    loadProducts();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (!isMobileFiltersOpen) {
@@ -254,10 +224,8 @@ const Shop = () => {
 
             <StatusMessage message={error} tone="error" className="mb-4" />
 
-            {isLoading ? (
-              <div className="rounded-2xl border border-slate-200 bg-white px-6 py-12 shadow-sm">
-                <Spinner label="Loading products..." size="lg" />
-              </div>
+            {isLoading && products.length === 0 ? (
+              <ProductGrid products={products} isLoading skeletonCount={6} />
             ) : filteredProducts.length === 0 ? (
               <div className="mm-empty-state">
                 <h2 className="text-xl font-semibold text-slate-900">Didn&apos;t find what you&apos;re looking for?</h2>

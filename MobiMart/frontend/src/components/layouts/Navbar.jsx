@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaBars, FaTimes, FaWhatsapp } from "react-icons/fa";
 import { buildWhatsAppHref } from "../../data/storeInfo";
+import mobiLogo from "../../assets/mobi-logo.png";
 
 const desktopLinks = [
   { name: "Home", path: "/" },
@@ -63,8 +64,16 @@ const Navbar = ({ isMobileMenuOpen = false, setIsMobileMenuOpen }) => {
       className="fixed top-0 z-50 w-full bg-primary shadow-md"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
-        <Link to="/" className="text-xl font-semibold tracking-wide text-white sm:text-2xl">
-          Mobi Mart
+        <Link
+          to="/"
+          className="inline-flex items-center"
+          aria-label="Mobi Mart home"
+        >
+          <img
+            src={mobiLogo}
+            alt="Mobi Mart"
+            className="h-10 w-auto object-contain sm:h-12 md:h-14 lg:h-16"
+          />
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -135,9 +144,14 @@ const Navbar = ({ isMobileMenuOpen = false, setIsMobileMenuOpen }) => {
                 <Link
                   to="/"
                   onClick={closeDrawer}
-                  className="text-lg font-semibold tracking-wide text-white"
+                  className="inline-flex items-center"
+                  aria-label="Mobi Mart home"
                 >
-                  Mobi Mart
+                  <img
+                    src={mobiLogo}
+                    alt="Mobi Mart"
+                    className="h-10 w-auto object-contain"
+                  />
                 </Link>
 
                 <button
