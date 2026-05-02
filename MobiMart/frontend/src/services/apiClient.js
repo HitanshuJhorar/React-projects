@@ -1,20 +1,7 @@
 import axios from "axios";
+import API from "../config/api";
 
-function resolveApiBaseUrl() {
-  const envBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
-
-  if (envBaseUrl) {
-    return envBaseUrl;
-  }
-
-  if (typeof window !== "undefined" && window.location.port === "5173") {
-    return "http://localhost:5000/api";
-  }
-
-  return "/api";
-}
-
-const API_BASE_URL = resolveApiBaseUrl();
+const API_BASE_URL = `${API}/api`;
 const ADMIN_TOKEN_KEY = "adminToken";
 
 export function getAdminToken() {
