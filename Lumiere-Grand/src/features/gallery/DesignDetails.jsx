@@ -1,6 +1,5 @@
 ﻿import { motion } from "framer-motion";
 import Container from "../../components/ui/Container";
-import OptimizedImage from "../../components/ui/OptimizedImage";
 import { designDetailCards } from "../../data/galleryContent";
 
 const iconMap = {
@@ -81,41 +80,25 @@ function DesignDetails() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="relative mx-auto h-[360px] w-full max-w-[440px]"
           >
-            <OptimizedImage
-              src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85"
+            <img
+              src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80"
               alt="Soft marble and neutral bedroom textures"
-              lazy
-              sizes="140px"
-              responsiveWidths={[160, 280, 400]}
-              className="absolute left-0 top-10 h-[260px] w-[140px] rounded-[10px] shadow-[0_20px_34px_rgba(31,21,18,0.08)]"
-              imgClassName="object-cover"
+              className="absolute left-0 top-10 h-[260px] w-[140px] rounded-[10px] object-cover shadow-[0_20px_34px_rgba(31,21,18,0.08)]"
             />
-            <OptimizedImage
-              src="https://images.unsplash.com/photo-1513694203232-719a280e022f"
+            <img
+              src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=900&q=80"
               alt="Warm wood and craftsmanship detail"
-              lazy
-              sizes="170px"
-              responsiveWidths={[220, 360, 520]}
-              className="absolute left-[110px] top-0 h-[320px] w-[170px] rounded-[10px] shadow-[0_20px_34px_rgba(31,21,18,0.08)]"
-              imgClassName="object-cover"
+              className="absolute left-[110px] top-0 h-[320px] w-[170px] rounded-[10px] object-cover shadow-[0_20px_34px_rgba(31,21,18,0.08)]"
             />
-            <OptimizedImage
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace"
+            <img
+              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=700&q=80"
               alt="Folded premium textiles and tonal materials"
-              lazy
-              sizes="120px"
-              responsiveWidths={[160, 260, 360]}
-              className="absolute right-0 top-12 h-[280px] w-[120px] rounded-[10px] shadow-[0_20px_34px_rgba(31,21,18,0.08)]"
-              imgClassName="object-cover"
+              className="absolute right-0 top-12 h-[280px] w-[120px] rounded-[10px] object-cover shadow-[0_20px_34px_rgba(31,21,18,0.08)]"
             />
-            <OptimizedImage
-              src="https://images.unsplash.com/photo-1484101403633-562f891dc89a"
+            <img
+              src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&fit=crop&w=900&q=80"
               alt="Botanical accent and natural styling"
-              lazy
-              sizes="170px"
-              responsiveWidths={[220, 360, 520]}
-              className="absolute bottom-2 left-[72px] h-[90px] w-[170px] rounded-[10px] shadow-[0_18px_28px_rgba(31,21,18,0.1)]"
-              imgClassName="object-cover"
+              className="absolute bottom-2 left-[72px] h-[90px] w-[170px] rounded-[10px] object-cover shadow-[0_18px_28px_rgba(31,21,18,0.1)]"
             />
           </motion.div>
         </div>
@@ -179,4 +162,3 @@ function DesignDetails() {
 }
 
 export default DesignDetails;
-

@@ -2,7 +2,6 @@
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import Container from "../../components/ui/Container";
-import OptimizedImage from "../../components/ui/OptimizedImage";
 
 function PlayIcon() {
   return (
@@ -30,7 +29,7 @@ function VideoSection() {
             <h2 className="mt-5 font-display text-[48px] leading-[0.98] text-[#1A1A1A] md:text-[60px]">
               Step Into
               <br />
-              Lumière Grand
+              LumiÃ¨re Grand
             </h2>
             <div className="mt-6 h-px w-20 bg-[#D6B4BA]" />
             <p className="mt-6 max-w-[420px] text-[15px] leading-[1.8] text-[#6B6B6B]">
@@ -51,16 +50,12 @@ function VideoSection() {
             transition={{ duration: 0.65, ease: "easeOut" }}
             className="group relative overflow-hidden rounded-[22px]"
           >
-            <OptimizedImage
-              src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2"
+            <img
+              src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1400&q=80"
               alt="Lush courtyard and fountain framed like a cinematic hotel scene"
-              lazy
-              sizes="(max-width: 767px) 100vw, 60vw"
-              responsiveWidths={[640, 960, 1400]}
-              className="min-h-[360px]"
-              imgClassName="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              className="h-full min-h-[360px] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             />
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(14,11,11,0.16),rgba(14,11,11,0.44))]" />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(14,11,11,0.16),rgba(14,11,11,0.44))]" />
             <motion.div
               whileHover={{ scale: 1.06 }}
               className="absolute inset-0 flex items-center justify-center"
@@ -77,4 +72,3 @@ function VideoSection() {
 }
 
 export default VideoSection;
-

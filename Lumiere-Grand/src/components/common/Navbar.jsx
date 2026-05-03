@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { navItems } from "../../data/homeContent";
 import { useScrollContext } from "../../hooks/useScrollContext";
-import OptimizedImage from "../ui/OptimizedImage";
 
 function ToggleIcon({ open }) {
   return (
@@ -112,9 +111,8 @@ function Navbar() {
   };
 
   const getNavLinkClass = (isActive) => {
-    const base =
-      "relative z-20 block rounded-md px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-300 ease-in-out";
-
+    const base = "relative px-4 py-2 rounded-md text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-300 ease-in-out pointer-events-auto z-20 block";
+    
     if (isActive) {
       return `${base} bg-neutral-200/60 text-black`;
     }
@@ -124,10 +122,6 @@ function Navbar() {
 
     return `${base} before:absolute before:inset-0 before:rounded-md ${hoverBg} before:origin-left before:scale-x-0 before:transition-transform before:duration-300 hover:before:scale-x-100 ${textColor}`;
   };
-
-  const logoClassName = `h-12 w-[156px] transition-all duration-300 ease-in-out md:h-14 md:w-[172px] ${
-    isSolid ? "brightness-0" : ""
-  }`;
 
   return (
     <motion.header
@@ -140,36 +134,47 @@ function Navbar() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`w-full transition-all duration-300 ease-in-out ${wrapperClassName}`}
       >
-        <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between px-4 transition-all duration-300 ease-in-out md:h-auto md:px-8 md:py-3 lg:py-5">
+        <div
+          className="mx-auto flex h-16 max-w-[1320px] items-center justify-between px-4 transition-all duration-300 ease-in-out md:h-auto md:px-8 md:py-3 lg:py-5"
+        >
           <Link to="/" className="flex shrink-0 items-center" onClick={handleLogoClick}>
-            <OptimizedImage
-              src="/reference/home/brand-logo.png"
+            <img
+              src="/images/Brand-logo-img.png"
               alt="Lumiere Grand"
-              priority
-              lazy={false}
-              width={172}
-              height={56}
-              className={logoClassName}
-              imgClassName="object-contain"
+              className={`h-12 w-auto transition-all duration-300 ease-in-out md:h-14 ${
+                isSolid ? "brightness-0" : ""
+              }`}
             />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
             {navItems.map((item) => {
-              const isActive = isActiveLink(item);
+              if (item.to.includes("#")) {
+                const isActiveSection = isActiveLink(item);
+
+                return (
+                  <Link
+                    key={item.label}
+                    to={item.to}
+                    onClick={() => setIsOpen(false)}
+                    className={getNavLinkClass(isActiveSection)}
+                  >
+                    <span className="relative z-20 pointer-events-auto">{item.label}</span>
+                  </Link>
+                );
+              }
+
               return (
                 <Link
                   key={item.label}
                   to={item.to}
                   onClick={() => {
                     setIsOpen(false);
-                    if (!item.to.includes("#")) {
-                      setActiveSection("");
-                    }
+                    setActiveSection("");
                   }}
-                  className={getNavLinkClass(isActive)}
+                  className={getNavLinkClass(isActiveLink(item))}
                 >
-                  <span className="pointer-events-auto relative z-20">{item.label}</span>
+                  <span className="relative z-20 pointer-events-auto">{item.label}</span>
                 </Link>
               );
             })}
@@ -179,7 +184,7 @@ function Navbar() {
             <Link
               to="/contact"
               onClick={() => setIsOpen(false)}
-              className="relative z-20 hidden rounded-md bg-[#d98c8c] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white ring-1 ring-white/20 transition-all duration-300 ease-in-out hover:scale-105 hover:bg-[#cb7f7f] hover:shadow-md active:scale-95 md:inline-flex"
+              className="hidden rounded-md bg-[#d98c8c] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-white ring-1 ring-white/20 transition-all duration-300 ease-in-out hover:bg-[#cb7f7f] hover:shadow-md hover:scale-105 active:scale-95 md:inline-flex relative z-20 pointer-events-auto"
             >
               Book Now
             </Link>
@@ -214,15 +219,10 @@ function Navbar() {
               >
                 <div className="flex h-16 items-center justify-between">
                   <Link to="/" className="flex shrink-0 items-center" onClick={handleLogoClick}>
-                    <OptimizedImage
-                      src="/reference/home/brand-logo.png"
+                    <img
+                      src="/images/Brand-logo-img.png"
                       alt="Lumiere Grand"
-                      priority
-                      lazy={false}
-                      width={160}
-                      height={52}
-                      className="h-12 w-[156px]"
-                      imgClassName="object-contain"
+                      className="h-12 w-auto"
                     />
                   </Link>
 
@@ -242,33 +242,54 @@ function Navbar() {
                   variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
                   className="flex min-h-[calc(100vh-120px)] flex-col items-center justify-center gap-7"
                 >
-                  {navItems.map((item) => (
-                    <motion.div
-                      key={item.label}
-                      variants={{
-                        hidden: { opacity: 0, y: 18 },
-                        visible: { opacity: 1, y: 0 },
-                      }}
-                      className="pointer-events-auto relative z-20"
-                    >
-                      <Link
-                        to={item.to}
-                        onClick={() => {
-                          setIsOpen(false);
-                          if (!item.to.includes("#")) {
-                            setActiveSection("");
-                          }
+                  {navItems.map((item) =>
+                    item.to.includes("#") ? (
+                      (() => {
+                        const isActiveSection = isActiveLink(item);
+
+                        return (
+                          <Link
+                            key={item.label}
+                            to={item.to}
+                            onClick={() => setIsOpen(false)}
+                            className={`text-[28px] block w-full text-center font-display leading-none transition-all duration-300 ease-in-out active:scale-95 relative z-20 pointer-events-auto ${
+                              isActiveSection
+                                ? "text-[#d98c8c]"
+                                : "text-white hover:text-[#d98c8c]"
+                            }`}
+                          >
+                            {item.label}
+                          </Link>
+                        );
+                      })()
+                    ) : (
+                      <motion.div
+                        key={item.label}
+                        variants={{
+                          hidden: { opacity: 0, y: 18 },
+                          visible: { opacity: 1, y: 0 },
                         }}
-                        className={`text-[28px] font-display leading-none transition-all duration-300 ease-in-out active:scale-95 ${
-                          isActiveLink(item)
-                            ? "text-[#d98c8c]"
-                            : "text-white hover:text-[#d98c8c]"
-                        }`}
+                        className="pointer-events-auto relative z-20"
                       >
-                        {item.label}
-                      </Link>
-                    </motion.div>
-                  ))}
+                        <Link
+                          to={item.to}
+                          onClick={() => {
+                            setIsOpen(false);
+                            setActiveSection("");
+                          }}
+                          className={
+                            `text-[28px] font-display leading-none transition-all duration-300 ease-in-out active:scale-95 ${
+                              isActiveLink(item)
+                                ? "text-[#d98c8c]"
+                                : "text-white hover:text-[#d98c8c]"
+                            }`
+                          }
+                        >
+                          {item.label}
+                        </Link>
+                      </motion.div>
+                    ),
+                  )}
 
                   <motion.div
                     variants={{
@@ -280,7 +301,7 @@ function Navbar() {
                     <Link
                       to="/contact"
                       onClick={() => setIsOpen(false)}
-                      className="relative z-20 mt-4 inline-flex justify-center rounded-md bg-[#d98c8c] px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-white ring-1 ring-white/20 transition-all duration-300 ease-in-out hover:scale-105 hover:bg-[#cb7f7f] active:scale-95"
+                      className="mt-4 inline-flex justify-center rounded-md bg-[#d98c8c] px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-white ring-1 ring-white/20 transition-all duration-300 ease-in-out hover:bg-[#cb7f7f] hover:scale-105 active:scale-95 relative z-20 pointer-events-auto"
                     >
                       Book Your Stay
                     </Link>
@@ -296,4 +317,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
