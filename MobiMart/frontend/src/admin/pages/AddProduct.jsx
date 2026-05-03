@@ -342,10 +342,17 @@ export default function AddProduct() {
       if (submitError.imageId) {
         revokeAndRemovePreviewImage(submitError.imageId);
         resetUploadStates();
-        setError("Image upload failed. The failed image was removed. Please review and retry.");
+        setError(
+          `${submitError.message || "Image upload failed"}. The failed image was removed. Please review and retry.`,
+        );
       } else {
         resetUploadStates();
-        setError(submitError.response?.data?.message || "Failed to save product.");
+        setError(
+          submitError.response?.data?.message ||
+            submitError.response?.data?.error ||
+            submitError.message ||
+            "Failed to save product.",
+        );
       }
     } finally {
       setIsSubmitting(false);

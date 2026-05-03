@@ -10,11 +10,12 @@ import upload from "../middleware/upload.js";
 
 const router = express.Router();
 
+function sendUploadError(res, status, message) {
+  return res.status(status).json({ error: message, message });
+}
+
 router.post("/", authMiddleware, (req, res, next) => {
-  upload.fields([
-    { name: "images", maxCount: MAX_IMAGE_UPLOADS },
-    { name: "image", maxCount: 1 },
-  ])(req, res, async (error) => {
+  upload.array("images", MAX_IMAGE_UPLOADS)(req, res, async (error) => {
     if (!error) {
       next();
       return;
@@ -23,16 +24,14 @@ router.post("/", authMiddleware, (req, res, next) => {
     await cleanupUploadedFiles(req.files);
 
     if (error instanceof multer.MulterError && error.code === "LIMIT_FILE_SIZE") {
-      res.status(413).json({ message: "Each image must be 5 MB or smaller" });
-      return;
+      return sendUploadError(res, 413, "Each image must be 5 MB or smaller");
     }
 
     if (error instanceof multer.MulterError && error.code === "LIMIT_UNEXPECTED_FILE") {
-      res.status(400).json({ message: `You can upload up to ${MAX_IMAGE_UPLOADS} images at once` });
-      return;
+      return sendUploadError(res, 400, `You can upload up to ${MAX_IMAGE_UPLOADS} images at once`);
     }
 
-    res.status(400).json({ message: error.message || "Failed to process images" });
+    return sendUploadError(res, 400, error.message || "Failed to process images");
   });
 }, uploadImages);
 

@@ -13,7 +13,7 @@ const uploadAPI = {
 
 async function uploadSingleProductImage(file, options = {}) {
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append("images", file);
 
   const response = await uploadAPI.post("/", formData, {
     headers: {
@@ -26,9 +26,13 @@ async function uploadSingleProductImage(file, options = {}) {
     },
   });
 
-  const fallbackUrl = Array.isArray(response.data?.urls) ? response.data.urls[0] : null;
+  const imageUrls = Array.isArray(response.data?.urls)
+    ? response.data.urls
+    : response.data?.url
+      ? [response.data.url]
+      : [];
 
-  return response.data?.url || fallbackUrl || null;
+  return imageUrls[0] || null;
 }
 
 export async function getProducts() {
@@ -84,8 +88,15 @@ export async function uploadProductImages(images, options = {}) {
         options.onImageUploadSuccess?.(image, uploadedUrl, currentAttempt);
       } catch (error) {
         if (attempt >= maxRetries) {
-          const uploadError = new Error("Image upload failed");
+          const uploadMessage =
+            error.response?.data?.message ||
+            error.response?.data?.error ||
+            error.message ||
+            "Image upload failed";
+          const uploadError = new Error(uploadMessage);
           uploadError.imageId = image.id;
+          uploadError.status = error.response?.status;
+          uploadError.response = error.response;
           uploadError.originalError = error;
           throw uploadError;
         }
