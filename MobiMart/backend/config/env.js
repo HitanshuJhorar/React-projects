@@ -22,6 +22,9 @@ export function validateEnv() {
   requireEnv("MONGO_URI");
   requireEnv("ADMIN_ID");
   requireEnv("ADMIN_PASSWORD");
+  requireEnv("CLOUDINARY_CLOUD_NAME");
+  requireEnv("CLOUDINARY_API_KEY");
+  requireEnv("CLOUDINARY_API_SECRET");
 }
 
 export function getJwtSecret() {

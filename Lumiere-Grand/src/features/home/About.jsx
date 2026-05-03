@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import SectionHeading from "../../components/common/SectionHeading";
+import OptimizedImage from "../../components/ui/OptimizedImage";
 import { fadeUp, subtleReveal } from "../../utils/motion";
 
 function About() {
@@ -27,19 +28,27 @@ function About() {
             href="#"
             className="mt-7 inline-flex text-[11px] font-semibold uppercase tracking-[0.22em] text-[#ca7584]"
           >
-            Discover Our Story <span className="ml-2">→</span>
+            Discover Our Story <span className="ml-2">?</span>
           </a>
         </motion.div>
 
-        <motion.img
+        <motion.div
           variants={subtleReveal}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          src="/reference/home/about.png"
-          alt="Lumiere Grand reception interior"
-          className="w-full rounded-[20px] object-cover shadow-[0_22px_50px_rgba(55,31,23,0.08)]"
-        />
+        >
+          <OptimizedImage
+            src="/reference/home/about.png"
+            alt="Lumiere Grand reception interior"
+            lazy
+            width={1176}
+            height={784}
+            sizes="(max-width: 1023px) 100vw, 50vw"
+            className="w-full rounded-[20px] shadow-[0_22px_50px_rgba(55,31,23,0.08)]"
+            imgClassName="object-cover"
+          />
+        </motion.div>
       </div>
     </section>
   );

@@ -30,7 +30,7 @@ export function AdminAuthProvider({ children }) {
       setAdmin(data?.admin || null);
       setIsAuthenticated(true);
       return data?.admin || null;
-    } catch (_error) {
+    } catch {
       logout();
       return null;
     } finally {
@@ -39,7 +39,13 @@ export function AdminAuthProvider({ children }) {
   }, [logout]);
 
   useEffect(() => {
-    refreshSession();
+    const timeoutId = window.setTimeout(() => {
+      void refreshSession();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, [refreshSession]);
 
   useEffect(() => {

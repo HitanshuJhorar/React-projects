@@ -1,14 +1,13 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
+import OptimizedImage from "../../components/ui/OptimizedImage";
 import { footerColumns } from "../../data/homeContent";
 import { fadeUp, staggerContainer, subtleReveal } from "../../utils/motion";
 
 function CTA() {
   return (
     <section className="relative overflow-hidden bg-[#0b0b0b]">
-
-
       <div className="relative px-6 pb-10 pt-20 md:px-10 lg:px-12">
         <div className="mx-auto max-w-[1320px]">
           <motion.div
@@ -46,10 +45,14 @@ function CTA() {
             className="mt-20 grid gap-10 border-t border-white/10 pt-10 md:grid-cols-[1.2fr_repeat(4,1fr)]"
           >
             <motion.div variants={subtleReveal}>
-              <img
-                src="/images/Brand-logo-img.png"
+              <OptimizedImage
+                src="/reference/home/brand-logo.png"
                 alt="Lumiere Grand"
-                className="h-16 w-auto"
+                lazy
+                width={160}
+                height={64}
+                className="h-16 w-[160px]"
+                imgClassName="object-contain"
               />
             </motion.div>
 
@@ -68,7 +71,7 @@ function CTA() {
           </motion.div>
 
           <p className="mt-8 text-center text-[12px] text-white/45">
-            Â© 2025 Lumiere Grand. All rights reserved.
+            © 2025 Lumiere Grand. All rights reserved.
           </p>
         </div>
       </div>

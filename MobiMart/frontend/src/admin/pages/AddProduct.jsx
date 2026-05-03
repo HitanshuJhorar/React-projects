@@ -9,6 +9,9 @@ import CustomDropdown from "../../components/ui/CustomDropdown";
 import Spinner from "../../components/ui/Spinner";
 import StatusMessage from "../../components/ui/StatusMessage";
 import { uploadProductImages } from "../../services/productAPI";
+import { formatFileSize, optimizeImageFile } from "../../utils/imageUpload";
+
+const MAX_IMAGES = 6;
 
 const initialForm = {
   name: "",
@@ -31,29 +34,82 @@ const storageOptions = [
   { label: "1TB", value: "1TB" },
 ];
 
+function moveItem(items, fromIndex, toIndex) {
+  if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0) {
+    return items;
+  }
+
+  const nextItems = [...items];
+  const [movedItem] = nextItems.splice(fromIndex, 1);
+  nextItems.splice(toIndex, 0, movedItem);
+  return nextItems;
+}
+
+function createPreviewImageId() {
+  return `image-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function buildPreviewImage(optimizedImage) {
+  return {
+    id: createPreviewImageId(),
+    file: optimizedImage.file,
+    previewUrl: optimizedImage.previewUrl,
+    originalName: optimizedImage.originalName,
+    originalSize: optimizedImage.originalSize,
+    optimizedSize: optimizedImage.optimizedSize,
+    reductionPercent: optimizedImage.reductionPercent,
+    uploadStatus: "ready",
+    uploadProgress: 0,
+    uploadAttempts: 0,
+    uploadError: "",
+  };
+}
+
 export default function AddProduct() {
   const navigate = useNavigate();
   const { addProduct } = useProducts();
   const [form, setForm] = useState(initialForm);
   const [variants, setVariants] = useState([{ storage: "", color: "", price: "" }]);
-  const [images, setImages] = useState([]);
+  const [previewImages, setPreviewImages] = useState([]);
+  const [uploadedUrls, setUploadedUrls] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isOptimizingImages, setIsOptimizingImages] = useState(false);
+  const [isDropZoneActive, setIsDropZoneActive] = useState(false);
+  const [draggedImageId, setDraggedImageId] = useState(null);
   const fileInputRef = useRef(null);
-  const imagesRef = useRef([]);
+  const previewImagesRef = useRef([]);
 
   useEffect(() => {
-    imagesRef.current = images;
-  }, [images]);
+    previewImagesRef.current = previewImages;
+  }, [previewImages]);
 
   useEffect(() => {
     return () => {
-      imagesRef.current.forEach((image) => {
+      previewImagesRef.current.forEach((image) => {
         URL.revokeObjectURL(image.previewUrl);
       });
     };
   }, []);
+
+  const updatePreviewImage = (imageId, updater) => {
+    setPreviewImages((prev) =>
+      prev.map((image) => (image.id === imageId ? { ...image, ...updater(image) } : image)),
+    );
+  };
+
+  const revokeAndRemovePreviewImage = (imageId) => {
+    setPreviewImages((prev) => {
+      const imageToRemove = prev.find((image) => image.id === imageId);
+
+      if (imageToRemove) {
+        URL.revokeObjectURL(imageToRemove.previewUrl);
+      }
+
+      return prev.filter((image) => image.id !== imageId);
+    });
+  };
 
   const addVariant = () => {
     setVariants([...variants, { storage: "", color: "", price: "" }]);
@@ -75,8 +131,122 @@ export default function AddProduct() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const resetUploadStates = () => {
+    setPreviewImages((prev) =>
+      prev.map((image) => ({
+        ...image,
+        uploadStatus: "ready",
+        uploadProgress: 0,
+        uploadAttempts: 0,
+        uploadError: "",
+      })),
+    );
+  };
+
+  const validateAndOptimizeImages = async (incomingFiles) => {
+    const files = Array.from(incomingFiles || []);
+    if (files.length === 0) {
+      return;
+    }
+
+    const invalid = files.some((file) => !file.type.startsWith("image/"));
+    if (invalid) {
+      throw new Error("Only image files are allowed.");
+    }
+
+    if (previewImagesRef.current.length + files.length > MAX_IMAGES) {
+      throw new Error(`You can upload a maximum of ${MAX_IMAGES} images.`);
+    }
+
+    const oversizedFile = files.find((file) => file.size > 5 * 1024 * 1024);
+    if (oversizedFile) {
+      throw new Error(`${oversizedFile.name} is larger than 5 MB.`);
+    }
+
+    setIsOptimizingImages(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const optimizedImages = await Promise.all(
+        files.map(async (file) => buildPreviewImage(await optimizeImageFile(file))),
+      );
+
+      setPreviewImages((prev) => [...prev, ...optimizedImages]);
+      setUploadedUrls([]);
+      setSuccess(
+        `${optimizedImages.length} image${optimizedImages.length > 1 ? "s are" : " is"} ready. Drag cards to set carousel order.`,
+      );
+    } finally {
+      setIsOptimizingImages(false);
+    }
+  };
+
+  const onFilesSelected = async (event) => {
+    try {
+      await validateAndOptimizeImages(event.target.files);
+    } catch (selectionError) {
+      setError(selectionError.message || "Failed to optimize selected images.");
+    } finally {
+      event.target.value = "";
+    }
+  };
+
+  const onDropZoneDragOver = (event) => {
+    event.preventDefault();
+    setIsDropZoneActive(true);
+  };
+
+  const onDropZoneDragLeave = (event) => {
+    if (event.currentTarget.contains(event.relatedTarget)) {
+      return;
+    }
+
+    setIsDropZoneActive(false);
+  };
+
+  const onDropZoneDrop = async (event) => {
+    event.preventDefault();
+    setIsDropZoneActive(false);
+
+    try {
+      await validateAndOptimizeImages(event.dataTransfer.files);
+    } catch (dropError) {
+      setError(dropError.message || "Failed to process dropped images.");
+    }
+  };
+
+  const removeImage = (imageId) => {
+    revokeAndRemovePreviewImage(imageId);
+    setUploadedUrls([]);
+  };
+
+  const onImageDragStart = (imageId) => {
+    setDraggedImageId(imageId);
+  };
+
+  const onImageDragOver = (event, targetImageId) => {
+    event.preventDefault();
+
+    if (!draggedImageId || draggedImageId === targetImageId || isSubmitting) {
+      return;
+    }
+
+    setPreviewImages((prev) => {
+      const fromIndex = prev.findIndex((image) => image.id === draggedImageId);
+      const toIndex = prev.findIndex((image) => image.id === targetImageId);
+      return moveItem(prev, fromIndex, toIndex);
+    });
+    setUploadedUrls([]);
+  };
+
+  const onImageDragEnd = () => {
+    setDraggedImageId(null);
+  };
+
   const onSubmit = async (event) => {
     event.preventDefault();
+
     if (!form.name.trim() || !form.brand.trim()) {
       setError("Please fill all required fields.");
       return;
@@ -101,20 +271,63 @@ export default function AddProduct() {
 
     try {
       setIsSubmitting(true);
+      setUploadedUrls([]);
       setError("");
       setSuccess("");
+      resetUploadStates();
 
-      const uploadedImageUrls =
-        images.length > 0
-          ? await uploadProductImages(images.map((image) => image.file))
-          : [];
+      const uploadResult =
+        previewImages.length > 0
+          ? await uploadProductImages(previewImages, {
+              maxRetries: 2,
+              onImageUploadStart: (image, attempt) => {
+                updatePreviewImage(image.id, () => ({
+                  uploadStatus: "uploading",
+                  uploadProgress: 0,
+                  uploadAttempts: attempt,
+                  uploadError: "",
+                }));
+              },
+              onImageUploadProgress: (image, progressEvent) => {
+                if (!progressEvent.total) {
+                  return;
+                }
+
+                updatePreviewImage(image.id, () => ({
+                  uploadStatus: "uploading",
+                  uploadProgress: Math.min(
+                    100,
+                    Math.round((progressEvent.loaded / progressEvent.total) * 100),
+                  ),
+                }));
+              },
+              onImageUploadRetry: (image, retryCount) => {
+                updatePreviewImage(image.id, (currentImage) => ({
+                  uploadStatus: "retrying",
+                  uploadProgress: currentImage.uploadProgress,
+                  uploadAttempts: retryCount + 1,
+                  uploadError: `Retrying upload (${retryCount}/2)...`,
+                }));
+              },
+              onImageUploadSuccess: (image) => {
+                updatePreviewImage(image.id, () => ({
+                  uploadStatus: "uploaded",
+                  uploadProgress: 100,
+                  uploadError: "",
+                }));
+              },
+            })
+          : { urls: [], url: null };
+
+      setUploadedUrls(uploadResult.urls);
 
       await addProduct({
         name: form.name.trim(),
         brand: form.brand.trim(),
         type: form.type,
         description: form.description.trim(),
-        images: uploadedImageUrls,
+        images: uploadResult.urls,
+        image: uploadResult.url,
         variants: variants.map((variant) => ({
           ...variant,
           price: Number(variant.price),
@@ -124,47 +337,19 @@ export default function AddProduct() {
       setSuccess("Product saved successfully. Redirecting...");
       navigate("/admin/products");
     } catch (submitError) {
-      setError(submitError.response?.data?.message || "Failed to save product.");
+      setUploadedUrls([]);
+
+      if (submitError.imageId) {
+        revokeAndRemovePreviewImage(submitError.imageId);
+        resetUploadStates();
+        setError("Image upload failed. The failed image was removed. Please review and retry.");
+      } else {
+        resetUploadStates();
+        setError(submitError.response?.data?.message || "Failed to save product.");
+      }
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const onImagesSelected = (event) => {
-    const files = Array.from(event.target.files || []);
-    if (files.length === 0) return;
-
-    const invalid = files.some((file) => !file.type.startsWith("image/"));
-    if (invalid) {
-      setError("Only image files are allowed.");
-      return;
-    }
-
-    if (images.length + files.length > 5) {
-      setError("You can upload a maximum of 5 images.");
-      return;
-    }
-
-    const nextImages = files.map((file) => ({
-      file,
-      previewUrl: URL.createObjectURL(file),
-    }));
-
-    setImages((prev) => [...prev, ...nextImages]);
-    setError("");
-    setSuccess(`${files.length} image${files.length > 1 ? "s" : ""} ready to upload.`);
-    event.target.value = "";
-  };
-
-  const removeImage = (indexToRemove) => {
-    setImages((prev) => {
-      const imageToRemove = prev[indexToRemove];
-      if (imageToRemove) {
-        URL.revokeObjectURL(imageToRemove.previewUrl);
-      }
-
-      return prev.filter((_, index) => index !== indexToRemove);
-    });
   };
 
   return (
@@ -250,7 +435,7 @@ export default function AddProduct() {
                   <button
                     type="button"
                     onClick={addVariant}
-                    className="ds-btn-secondary py-1.5 text-xs px-3"
+                    className="ds-btn-secondary px-3 py-1.5 text-xs"
                   >
                     + Add Variant
                   </button>
@@ -306,7 +491,7 @@ export default function AddProduct() {
                         <button
                           type="button"
                           onClick={() => removeVariant(index)}
-                          className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-rose-600 transition hover:bg-rose-200 shadow-sm"
+                          className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-rose-600 shadow-sm transition hover:bg-rose-200"
                           title="Remove Variant"
                         >
                           <FiX className="text-sm" />
@@ -319,10 +504,17 @@ export default function AddProduct() {
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
-              <p className="text-lg font-semibold text-slate-900">Product Images</p>
-              <p className="mb-4 text-sm text-slate-500">
-                Upload up to 5 images. They will be stored in Cloudinary before the product is saved.
-              </p>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">Product Images</p>
+                  <p className="mb-4 text-sm text-slate-500">
+                    Upload up to {MAX_IMAGES} images. Drag cards to set the carousel order. The first image becomes the main thumbnail.
+                  </p>
+                </div>
+                <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-600 shadow-sm">
+                  {previewImages.length}/{MAX_IMAGES}
+                </span>
+              </div>
 
               <input
                 ref={fileInputRef}
@@ -330,61 +522,149 @@ export default function AddProduct() {
                 accept="image/*"
                 multiple
                 className="hidden"
-                onChange={onImagesSelected}
+                onChange={onFilesSelected}
+                disabled={isOptimizingImages || isSubmitting}
               />
 
-              <button
-                type="button"
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => fileInputRef.current?.click()}
-                className="mb-4 flex h-40 w-full flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-slate-500 transition hover:border-emerald-400 hover:text-emerald-600"
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+                onDragOver={onDropZoneDragOver}
+                onDragLeave={onDropZoneDragLeave}
+                onDrop={onDropZoneDrop}
+                className={`mb-4 flex min-h-40 w-full cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed bg-white px-4 text-center transition ${
+                  isDropZoneActive
+                    ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                    : "border-slate-300 text-slate-500 hover:border-emerald-400 hover:text-emerald-600"
+                }`}
               >
-                <FiUpload className="mb-2 text-2xl" />
-                <span className="font-medium">Drag & drop images here</span>
-                <span className="text-sm">or click to browse files</span>
-              </button>
+                {isOptimizingImages ? (
+                  <>
+                    <Spinner size="sm" label="" className="mb-2 gap-2 text-emerald-600" />
+                    <span className="font-medium">Optimizing selected images...</span>
+                    <span className="text-sm">Please wait a moment</span>
+                  </>
+                ) : (
+                  <>
+                    <FiUpload className="mb-2 text-2xl" />
+                    <span className="font-medium">Drag & drop images or click to upload</span>
+                    <span className="text-sm">JPEG, PNG, WebP up to 5 MB each</span>
+                  </>
+                )}
+              </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="mb-3 flex items-center justify-between text-xs text-slate-500">
+                <span>Drag image cards to reorder the frontend carousel.</span>
+                {previewImages.length > 1 ? <span>Leftmost card is shown first.</span> : null}
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 <AnimatePresence>
-                  {images.map((image, index) => (
+                  {previewImages.map((image, index) => (
                     <motion.div
-                      key={image.previewUrl}
+                      key={image.id}
+                      layout
+                      draggable={!isSubmitting && !isOptimizingImages}
+                      onDragStart={() => onImageDragStart(image.id)}
+                      onDragOver={(event) => onImageDragOver(event, image.id)}
+                      onDragEnd={onImageDragEnd}
                       initial={{ opacity: 0, scale: 0.85 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.7 }}
-                      className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white"
+                      className={`group relative overflow-hidden rounded-xl border bg-white shadow-sm transition ${
+                        draggedImageId === image.id
+                          ? "border-emerald-400 ring-2 ring-emerald-100"
+                          : "border-slate-200"
+                      }`}
                     >
                       <img
                         src={image.previewUrl}
                         alt={`Product preview ${index + 1}`}
-                        className="h-24 w-full object-cover transition duration-200 group-hover:scale-105"
+                        className="h-28 w-full object-cover transition duration-200 group-hover:scale-105"
                       />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/55 to-transparent px-2 py-2 text-[10px] text-white">
+                        <p className="truncate font-medium">{image.originalName}</p>
+                        <p>
+                          {formatFileSize(image.originalSize)} to {formatFileSize(image.optimizedSize)}
+                        </p>
+                        <p>{image.reductionPercent}% smaller</p>
+                      </div>
+                      <span className="absolute left-1.5 top-1.5 rounded bg-black/65 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                        #{index + 1}
+                      </span>
                       {index === 0 ? (
-                        <span className="absolute left-1.5 top-1.5 rounded bg-emerald-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                        <span className="absolute bottom-16 left-1.5 rounded bg-emerald-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
                           MAIN
                         </span>
                       ) : null}
                       <button
                         type="button"
-                        onClick={() => removeImage(index)}
+                        onClick={() => removeImage(image.id)}
                         className="absolute right-1.5 top-1.5 rounded-full bg-black/60 p-1 text-white"
+                        aria-label={`Remove ${image.originalName}`}
                       >
                         <FiX className="text-xs" />
                       </button>
+
+                      <div className="border-t border-slate-100 px-2 py-2">
+                        <div className="mb-1 flex items-center justify-between text-[11px] text-slate-500">
+                          <span className="font-medium capitalize">{image.uploadStatus}</span>
+                          <span>{image.uploadProgress}%</span>
+                        </div>
+                        <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
+                          <div
+                            className={`h-full rounded-full transition-all duration-300 ${
+                              image.uploadStatus === "uploaded"
+                                ? "bg-emerald-500"
+                                : image.uploadStatus === "retrying"
+                                  ? "bg-amber-400"
+                                  : image.uploadStatus === "uploading"
+                                    ? "bg-primary"
+                                    : "bg-slate-200"
+                            }`}
+                            style={{ width: `${image.uploadProgress}%` }}
+                          />
+                        </div>
+                        <p className="mt-1 min-h-4 text-[10px] text-slate-500">
+                          {image.uploadError ||
+                            (image.uploadStatus === "uploaded"
+                              ? "Uploaded"
+                              : image.uploadStatus === "uploading"
+                                ? `Attempt ${Math.max(image.uploadAttempts, 1)}`
+                                : image.uploadStatus === "ready"
+                                  ? "Ready to upload"
+                                  : "")}
+                        </p>
+                      </div>
                     </motion.div>
                   ))}
                 </AnimatePresence>
 
-                {Array.from({ length: Math.max(0, 5 - images.length) }).map((_, index) => (
+                {Array.from({ length: Math.max(0, MAX_IMAGES - previewImages.length) }).map((_, index) => (
                   <button
                     key={`slot-${index}`}
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex h-24 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white text-xl text-slate-400 hover:border-emerald-400 hover:text-emerald-500"
+                    disabled={isOptimizingImages || isSubmitting}
+                    className="flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white text-xl text-slate-400 transition hover:border-emerald-400 hover:text-emerald-500"
                   >
                     +
                   </button>
                 ))}
               </div>
+
+              {uploadedUrls.length > 0 ? (
+                <p className="mt-3 text-xs text-slate-500">
+                  {uploadedUrls.length} image{uploadedUrls.length > 1 ? "s" : ""} uploaded in carousel order.
+                </p>
+              ) : null}
             </div>
 
             <div className="lg:col-span-2">
@@ -392,8 +672,8 @@ export default function AddProduct() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                disabled={isSubmitting}
-                className="ds-btn-primary w-auto px-8 py-3 shadow-sm text-sm"
+                disabled={isSubmitting || isOptimizingImages}
+                className="ds-btn-primary w-auto px-8 py-3 text-sm shadow-sm disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isSubmitting ? (
                   <>

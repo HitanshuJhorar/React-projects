@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { getCloudinaryImageUrl } from "../utils/cloudinaryImage";
 
 export default function ProductGallery({
   images,
@@ -21,7 +22,7 @@ export default function ProductGallery({
             }`}
           >
             <img
-              src={image}
+              src={getCloudinaryImageUrl(image, "thumbnail")}
               alt={productName}
               loading="lazy"
               decoding="async"
@@ -35,7 +36,7 @@ export default function ProductGallery({
         <AnimatePresence mode="wait">
           <motion.img
             key={selectedImage}
-            src={selectedImage}
+            src={getCloudinaryImageUrl(selectedImage, "hero")}
             alt={productName}
             loading="eager"
             decoding="async"

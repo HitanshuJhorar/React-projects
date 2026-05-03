@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Container from "../../components/ui/Container";
+import OptimizedImage from "../../components/ui/OptimizedImage";
 
 function GalleryHero() {
   return (
@@ -52,14 +53,16 @@ function GalleryHero() {
           transition={{ duration: 0.75, ease: "easeOut" }}
           className="relative order-last h-[260px] overflow-hidden rounded-[28px] sm:h-[320px] lg:order-none lg:h-[520px] lg:rounded-none"
         >
-          <div className="absolute inset-y-0 left-0 z-10 w-36 bg-[linear-gradient(90deg,#F8F6F3_0%,rgba(248,246,243,0.82)_50%,rgba(248,246,243,0)_100%)]" />
-          <motion.img
-            src="https://images.unsplash.com/photo-1522798514-97ceb8c4f1c8?auto=format&fit=crop&w=1400&q=80"
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-36 bg-[linear-gradient(90deg,#F8F6F3_0%,rgba(248,246,243,0.82)_50%,rgba(248,246,243,0)_100%)]" />
+          <OptimizedImage
+            src="https://images.unsplash.com/photo-1522798514-97ceb8c4f1c8"
             alt="Refined hotel lounge with layered seating and warm chandeliers"
-            className="h-full w-full object-cover"
-            initial={{ scale: 1.06 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.9, ease: "easeOut" }}
+            priority
+            lazy={false}
+            sizes="(max-width: 1023px) 100vw, 560px"
+            responsiveWidths={[640, 960, 1400]}
+            className="h-full w-full"
+            imgClassName="object-cover"
           />
         </motion.div>
       </Container>

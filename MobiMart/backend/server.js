@@ -29,7 +29,6 @@ app.use((req, res, next) => {
 })
 
 // 🔥 Static uploads
-app.use('/uploads', express.static('uploads'))
 
 // 🔥 Routes
 app.get('/', (req, res) => {

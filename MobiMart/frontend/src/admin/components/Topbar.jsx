@@ -1,4 +1,3 @@
-import { FiSearch } from "react-icons/fi";
 import { useAdminAuth } from "../context/useAdminAuth";
 
 export default function Topbar() {

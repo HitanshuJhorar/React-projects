@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Container from "../../components/ui/Container";
+import OptimizedImage from "../../components/ui/OptimizedImage";
 
 function ContactHero() {
   return (
@@ -38,11 +39,16 @@ function ContactHero() {
           transition={{ duration: 0.75, ease: "easeOut" }}
           className="relative h-[360px] overflow-hidden rounded-[28px] lg:h-[500px] lg:rounded-none"
         >
-          <div className="absolute inset-y-0 left-0 z-10 w-40 bg-[linear-gradient(90deg,#F8F6F3_0%,rgba(248,246,243,0.82)_48%,rgba(248,246,243,0)_100%)]" />
-          <img
-            src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1400&q=80"
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-40 bg-[linear-gradient(90deg,#F8F6F3_0%,rgba(248,246,243,0.82)_48%,rgba(248,246,243,0)_100%)]" />
+          <OptimizedImage
+            src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa"
             alt="Luxury hotel reception with marble desk and warm lighting"
-            className="h-full w-full object-cover"
+            priority
+            lazy={false}
+            sizes="(max-width: 1023px) 100vw, 580px"
+            responsiveWidths={[640, 960, 1400]}
+            className="h-full w-full"
+            imgClassName="object-cover"
           />
         </motion.div>
       </Container>

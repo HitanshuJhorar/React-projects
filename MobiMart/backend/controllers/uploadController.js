@@ -1,51 +1,49 @@
+import fs from "fs/promises";
 import cloudinary from "../config/cloudinary.js";
+import { buildOptimizedCloudinaryUrl } from "../utils/cloudinaryImage.js";
+import { collectUploadedFiles, MAX_IMAGE_UPLOADS } from "../middleware/upload.js";
 
-function uploadBuffer(fileBuffer, folder) {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
+async function uploadSingleImage(file) {
+  const uploadedImage = await cloudinary.uploader.upload(file.path, {
+    folder: "mobimart/products",
+    resource_type: "image",
+    use_filename: true,
+    unique_filename: true,
+    transformation: [
       {
-        folder,
-        resource_type: "image",
+        width: 800,
+        crop: "limit",
+        quality: "auto",
+        fetch_format: "auto",
       },
-      (error, result) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-
-        resolve(result);
-      },
-    );
-
-    stream.end(fileBuffer);
+    ],
   });
+
+  return buildOptimizedCloudinaryUrl(uploadedImage.secure_url, "product");
 }
 
 export const uploadImages = async (req, res) => {
-  try {
-    if (
-      !process.env.CLOUDINARY_CLOUD_NAME ||
-      !process.env.CLOUDINARY_API_KEY ||
-      !process.env.CLOUDINARY_API_SECRET
-    ) {
-      return res.status(500).json({
-        message: "Cloudinary is not configured",
-      });
-    }
+  const localFiles = collectUploadedFiles(req.files);
 
-    if (!Array.isArray(req.files) || req.files.length === 0) {
+  try {
+    if (localFiles.length === 0) {
       return res.status(400).json({ message: "At least one image is required" });
     }
 
-    const uploadedImages = await Promise.all(
-      req.files.map((file) => uploadBuffer(file.buffer, "mobimart/products")),
-    );
+    if (localFiles.length > MAX_IMAGE_UPLOADS) {
+      return res.status(400).json({ message: `You can upload up to ${MAX_IMAGE_UPLOADS} images` });
+    }
 
-    res.status(201).json({
-      urls: uploadedImages.map((image) => image.secure_url),
+    const urls = await Promise.all(localFiles.map((file) => uploadSingleImage(file)));
+
+    return res.status(201).json({
+      urls,
+      url: urls[0] || null,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to upload images" });
+    return res.status(500).json({ message: "Failed to upload images to Cloudinary" });
+  } finally {
+    await Promise.all(localFiles.map((file) => fs.unlink(file.path).catch(() => {})));
   }
 };

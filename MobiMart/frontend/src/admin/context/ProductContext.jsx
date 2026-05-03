@@ -26,7 +26,13 @@ export function ProductProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    refreshProducts();
+    const timeoutId = window.setTimeout(() => {
+      void refreshProducts();
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, [refreshProducts]);
 
   const addProduct = async (product) => {

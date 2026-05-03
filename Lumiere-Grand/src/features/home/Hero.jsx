@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
+import OptimizedImage from "../../components/ui/OptimizedImage";
 import { BedIcon, PoolIcon } from "../../components/icons/LuxuryIcons";
 import { fadeUp, staggerContainer } from "../../utils/motion";
 
@@ -104,17 +105,20 @@ function Hero() {
   return (
     <section
       id="home-hero"
-      className="relative flex flex-col lg:grid lg:grid-cols-2 items-center min-h-[60vh] lg:min-h-screen bg-[#0b0b0b]"
+      className="relative flex min-h-[60vh] flex-col items-center bg-[#0b0b0b] lg:grid lg:min-h-screen lg:grid-cols-2"
     >
-      <img
-        src="/images/hero-image.png"
+      <OptimizedImage
+        src="/reference/home/hero-bg.png"
         alt="Lumiere Grand hotel entrance"
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        priority
+        lazy={false}
+        className="absolute inset-0 z-0"
+        imgClassName="object-cover"
       />
-      <div className="absolute inset-0 z-0 bg-black/50 pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-black/50" />
 
-      <div className="relative z-10 col-span-2 container mx-auto w-full px-6 pb-8 pt-28 md:pb-36 md:pt-40 lg:px-12">
-        <div className="grid lg:grid-cols-2 items-center gap-10">
+      <div className="relative z-10 col-span-2 mx-auto w-full max-w-[1320px] px-6 pb-8 pt-28 md:pb-36 md:pt-40 lg:px-12">
+        <div className="grid items-center gap-10 lg:grid-cols-2">
           <motion.div
             variants={staggerContainer}
             initial="hidden"

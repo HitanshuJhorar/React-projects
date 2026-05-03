@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+const MAX_PRODUCT_IMAGES = 6;
+
 const variantSchema = new mongoose.Schema(
   {
     storage: {
@@ -72,8 +74,9 @@ const productSchema = new mongoose.Schema(
           value == null ||
           (Array.isArray(value) &&
             value.length > 0 &&
+            value.length <= MAX_PRODUCT_IMAGES &&
             value.every((image) => typeof image === "string" && image.trim().length > 0)),
-        message: "At least one product image is required",
+        message: `Product images must contain between 1 and ${MAX_PRODUCT_IMAGES} items`,
       },
     },
     variants: {

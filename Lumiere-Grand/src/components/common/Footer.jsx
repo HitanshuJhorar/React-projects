@@ -1,5 +1,6 @@
 import Container from "../ui/Container";
 import Input from "../ui/Input";
+import OptimizedImage from "../ui/OptimizedImage";
 
 export default function Footer() {
   return (
@@ -7,10 +8,14 @@ export default function Footer() {
       <Container>
         <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
           <div>
-            <img
-              src="/images/Brand-logo-img.png"
+            <OptimizedImage
+              src="/reference/home/brand-logo.png"
               alt="Lumiere Grand"
-              className="h-14 w-auto brightness-0"
+              lazy
+              width={160}
+              height={56}
+              className="h-14 w-[160px]"
+              imgClassName="object-contain"
             />
             <p className="mt-5 max-w-[240px] text-[14px] leading-[1.8] text-[#6B6B6B]">
               Timeless luxury. Unforgettable stays.

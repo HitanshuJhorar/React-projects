@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import SectionHeading from "../../components/common/SectionHeading";
+import OptimizedImage from "../../components/ui/OptimizedImage";
 import { galleryImages } from "../../data/homeContent";
 import { staggerContainer, subtleReveal } from "../../utils/motion";
 
@@ -72,19 +73,26 @@ function GalleryPreview() {
         >
           <div className="relative overflow-hidden rounded-[18px]">
             <AnimatePresence mode="wait">
-              <motion.img
+              <motion.div
                 key={galleryImages[activeIndex]}
-                src={galleryImages[activeIndex]}
-                alt={`Gallery preview ${activeIndex + 1}`}
-                loading="lazy"
                 initial={{ opacity: 0, x: 24 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -24 }}
                 transition={{ duration: 0.45, ease: "easeInOut" }}
-                className="h-[320px] w-full object-cover"
-              />
+              >
+                <OptimizedImage
+                  src={galleryImages[activeIndex]}
+                  alt={`Gallery preview ${activeIndex + 1}`}
+                  lazy
+                  width={600}
+                  height={320}
+                  sizes="100vw"
+                  className="h-[320px]"
+                  imgClassName="object-cover"
+                />
+              </motion.div>
             </AnimatePresence>
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(11,11,11,0.26))]" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(11,11,11,0.26))]" />
           </div>
 
           <div className="mt-4 flex items-center justify-center gap-2">
@@ -118,15 +126,17 @@ function GalleryPreview() {
               variants={subtleReveal}
               className="group relative overflow-hidden rounded-[10px]"
             >
-              <motion.img
+              <OptimizedImage
                 src={image}
                 alt={`Gallery preview ${index + 1}`}
-                loading="lazy"
-                className="h-[170px] w-full object-cover"
-                whileHover={{ scale: 1.08 }}
-                transition={{ duration: 0.55 }}
+                lazy
+                width={320}
+                height={170}
+                sizes="(max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 16vw"
+                className="h-[170px]"
+                imgClassName="interaction-image object-cover"
               />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(11,11,11,0.35))] opacity-0 transition duration-300 group-hover:opacity-100" />
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(11,11,11,0.35))] opacity-0 transition duration-300 group-hover:opacity-100" />
             </motion.div>
           ))}
         </motion.div>

@@ -2,6 +2,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatINR } from "../../utils/currency";
+import { getCloudinaryImageUrl } from "../../utils/cloudinaryImage";
 import { buildProductInquiryMessage, buildWhatsAppHref } from "../../data/storeInfo";
 
 function getProductSignals(product) {
@@ -23,7 +24,10 @@ const ProductCard = ({ product }) => {
   const [imageFailed, setImageFailed] = useState(false);
   const productId = product._id || product.id;
   const firstVariant = product.variants?.[0];
-  const previewImage = (product.images && product.images[0]) || product.image;
+  const previewImage = getCloudinaryImageUrl(
+    (product.images && product.images[0]) || product.image,
+    "product",
+  );
   const displayPrice = firstVariant?.price ?? product.price ?? 0;
   const displayStorage = firstVariant?.storage || product.storage || "";
   const signal = getProductSignals(product);

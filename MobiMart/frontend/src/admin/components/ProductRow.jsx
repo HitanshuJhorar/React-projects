@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { getCloudinaryImageUrl } from "../../utils/cloudinaryImage";
 
 function formatPrice(value) {
   return new Intl.NumberFormat("en-IN", {
@@ -23,10 +24,12 @@ export default function ProductRow({ product, index, onDelete }) {
   const allowDelete = typeof onDelete === "function";
   const productId = product._id || product.id;
   const firstVariant = product.variants?.[0];
-  const mainImage =
+  const mainImage = getCloudinaryImageUrl(
     (Array.isArray(product.images) && product.images.length > 0 && product.images[0]) ||
-    product.image ||
-    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=160&auto=format&fit=crop";
+      product.image ||
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=160&auto=format&fit=crop",
+    "thumbnail",
+  );
 
   return (
     <motion.tr

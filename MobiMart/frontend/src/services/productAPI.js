@@ -11,6 +11,26 @@ const uploadAPI = {
   post: (url, data, config) => apiClient.post(`/upload${url}`, data, config),
 };
 
+async function uploadSingleProductImage(file, options = {}) {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const response = await uploadAPI.post("/", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    onUploadProgress: (progressEvent) => {
+      if (typeof options.onUploadProgress === "function") {
+        options.onUploadProgress(progressEvent);
+      }
+    },
+  });
+
+  const fallbackUrl = Array.isArray(response.data?.urls) ? response.data.urls[0] : null;
+
+  return response.data?.url || fallbackUrl || null;
+}
+
 export async function getProducts() {
   const response = await productAPI.get("/");
   return Array.isArray(response.data) ? response.data : [];
@@ -36,18 +56,48 @@ export async function deleteProduct(id) {
   return response.data;
 }
 
-export async function uploadProductImages(files) {
-  const formData = new FormData();
+export async function uploadProductImages(images, options = {}) {
+  const urls = [];
+  const maxRetries = Number.isInteger(options.maxRetries) ? options.maxRetries : 2;
 
-  files.forEach((file) => {
-    formData.append("images", file);
-  });
+  for (const image of images) {
+    let attempt = 0;
+    let uploadedUrl = null;
 
-  const response = await uploadAPI.post("/", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+    while (attempt <= maxRetries && !uploadedUrl) {
+      const currentAttempt = attempt + 1;
 
-  return Array.isArray(response.data?.urls) ? response.data.urls : [];
+      try {
+        options.onImageUploadStart?.(image, currentAttempt);
+
+        uploadedUrl = await uploadSingleProductImage(image.file, {
+          onUploadProgress: (progressEvent) => {
+            options.onImageUploadProgress?.(image, progressEvent, currentAttempt);
+          },
+        });
+
+        if (!uploadedUrl) {
+          throw new Error("Image upload failed");
+        }
+
+        urls.push(uploadedUrl);
+        options.onImageUploadSuccess?.(image, uploadedUrl, currentAttempt);
+      } catch (error) {
+        if (attempt >= maxRetries) {
+          const uploadError = new Error("Image upload failed");
+          uploadError.imageId = image.id;
+          uploadError.originalError = error;
+          throw uploadError;
+        }
+
+        attempt += 1;
+        options.onImageUploadRetry?.(image, attempt, error);
+      }
+    }
+  }
+
+  return {
+    urls,
+    url: urls[0] || null,
+  };
 }

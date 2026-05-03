@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Container from "../../components/ui/Container";
+import OptimizedImage from "../../components/ui/OptimizedImage";
 
 function RoomsHero() {
   return (
@@ -37,11 +38,16 @@ function RoomsHero() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="relative order-last h-[260px] overflow-hidden rounded-[28px] sm:h-[320px] lg:order-none lg:h-[520px] lg:rounded-none"
         >
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,#F8F6F3_0%,rgba(248,246,243,0.76)_18%,rgba(248,246,243,0.04)_45%)] lg:-left-24 lg:w-[160px]" />
-          <img
-            src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=80"
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#F8F6F3_0%,rgba(248,246,243,0.76)_18%,rgba(248,246,243,0.04)_45%)] lg:-left-24 lg:w-[160px]" />
+          <OptimizedImage
+            src="https://images.unsplash.com/photo-1566073771259-6a8506099945"
             alt="Luxury hotel bedroom with layered linens and warm lighting"
-            className="h-full w-full object-cover"
+            priority
+            lazy={false}
+            sizes="(max-width: 1023px) 100vw, 540px"
+            responsiveWidths={[640, 900, 1200]}
+            className="h-full w-full"
+            imgClassName="object-cover"
           />
         </motion.div>
       </Container>

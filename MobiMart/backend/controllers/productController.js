@@ -1,8 +1,25 @@
 import mongoose from "mongoose";
 import Product from "../models/Product.js";
+import {
+  buildOptimizedCloudinaryUrl,
+  normalizeProductImages,
+} from "../utils/cloudinaryImage.js";
+
+const MAX_PRODUCT_IMAGES = 6;
+
+function formatProductResponse(product) {
+  const normalizedImages = normalizeProductImages(product.images);
+
+  return {
+    ...product,
+    images: normalizedImages,
+    image: normalizedImages?.[0] || product.image || null,
+  };
+}
 
 function sanitizeProductPayload(body) {
-  const { name, brand, description, type, images, variants } = body;
+  const { name, brand, description, type, images, image, variants } = body;
+  const inputImages = Array.isArray(images) ? images : image ? [image] : [];
 
   return {
     name: typeof name === "string" ? name.trim() : "",
@@ -10,10 +27,11 @@ function sanitizeProductPayload(body) {
     description:
       typeof description === "string" ? description.trim() : undefined,
     type: typeof type === "string" ? type.trim() : "",
-    images: Array.isArray(images)
-      ? images
+    images: Array.isArray(inputImages)
+      ? inputImages
           .map((image) => (typeof image === "string" ? image.trim() : image))
           .filter(Boolean)
+          .map((image) => buildOptimizedCloudinaryUrl(image, "product"))
       : [],
     variants: Array.isArray(variants)
       ? variants.map((variant) => ({
@@ -82,6 +100,10 @@ function validateProductPayload(body, sanitized) {
     return "Each image must be a non-empty string";
   }
 
+  if (sanitized.images.length > MAX_PRODUCT_IMAGES) {
+    return `You can attach up to ${MAX_PRODUCT_IMAGES} images per product`;
+  }
+
   if (!Array.isArray(body.variants) || sanitized.variants.length === 0) {
     return "At least one variant is required";
   }
@@ -128,7 +150,11 @@ function handleControllerError(error, res) {
 export const getProducts = async (_req, res) => {
   try {
     const products = await Product.find().sort({ createdAt: -1 });
-    res.json(products);
+    res.json(
+      products.map((product) => ({
+        ...formatProductResponse(product.toObject()),
+      })),
+    );
   } catch (error) {
     handleControllerError(error, res);
   }
@@ -142,7 +168,7 @@ export const getProductById = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.json(product);
+    res.json(formatProductResponse(product.toObject()));
   } catch (error) {
     handleControllerError(error, res);
   }
@@ -160,7 +186,7 @@ export const addProduct = async (req, res) => {
     const product = new Product(sanitized);
     await product.save();
 
-    res.status(201).json(product);
+    res.status(201).json(formatProductResponse(product.toObject()));
   } catch (error) {
     handleControllerError(error, res);
   }
@@ -188,7 +214,7 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.json(updatedProduct);
+    res.json(formatProductResponse(updatedProduct.toObject()));
   } catch (error) {
     handleControllerError(error, res);
   }
