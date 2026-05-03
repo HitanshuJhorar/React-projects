@@ -1,4 +1,4 @@
-export const navItems = [
+﻿export const navItems = [
   { label: "Home", to: "/" },
   { label: "Rooms", to: "/rooms" },
   { label: "Amenities", to: "/#amenities" },
@@ -99,3 +99,4 @@ export const footerColumns = [
     links: ["+1 (555) 123-4567", "info@lumieregrand.com", "123 Grand Avenue, New York, NY"],
   },
 ];
+

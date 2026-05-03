@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+﻿import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { navItems } from "../../data/homeContent";
@@ -296,3 +296,4 @@ function Navbar() {
 }
 
 export default Navbar;
+

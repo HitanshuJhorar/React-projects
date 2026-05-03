@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import Container from "../../components/ui/Container";
 import OptimizedImage from "../../components/ui/OptimizedImage";
 
@@ -71,3 +71,4 @@ function GalleryHero() {
 }
 
 export default GalleryHero;
+

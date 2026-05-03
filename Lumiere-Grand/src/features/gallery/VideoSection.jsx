@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import Container from "../../components/ui/Container";
@@ -30,7 +30,7 @@ function VideoSection() {
             <h2 className="mt-5 font-display text-[48px] leading-[0.98] text-[#1A1A1A] md:text-[60px]">
               Step Into
               <br />
-              Lumi�re Grand
+              Lumière Grand
             </h2>
             <div className="mt-6 h-px w-20 bg-[#D6B4BA]" />
             <p className="mt-6 max-w-[420px] text-[15px] leading-[1.8] text-[#6B6B6B]">
@@ -77,3 +77,4 @@ function VideoSection() {
 }
 
 export default VideoSection;
+

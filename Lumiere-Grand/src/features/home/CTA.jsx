@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import OptimizedImage from "../../components/ui/OptimizedImage";
@@ -71,7 +71,7 @@ function CTA() {
           </motion.div>
 
           <p className="mt-8 text-center text-[12px] text-white/45">
-            � 2025 Lumiere Grand. All rights reserved.
+            © 2025 Lumiere Grand. All rights reserved.
           </p>
         </div>
       </div>
@@ -80,3 +80,4 @@ function CTA() {
 }
 
 export default CTA;
+

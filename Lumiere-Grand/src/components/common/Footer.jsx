@@ -1,4 +1,4 @@
-import Container from "../ui/Container";
+﻿import Container from "../ui/Container";
 import Input from "../ui/Input";
 import OptimizedImage from "../ui/OptimizedImage";
 
@@ -73,3 +73,4 @@ export default function Footer() {
     </footer>
   );
 }
+

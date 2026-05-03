@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import OptimizedImage from "../ui/OptimizedImage";
 import {
@@ -154,3 +154,4 @@ function RoomCard({
 }
 
 export default RoomCard;
+

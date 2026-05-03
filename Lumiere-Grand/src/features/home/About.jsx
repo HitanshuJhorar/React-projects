@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import SectionHeading from "../../components/common/SectionHeading";
 import OptimizedImage from "../../components/ui/OptimizedImage";
 import { fadeUp, subtleReveal } from "../../utils/motion";
@@ -55,3 +55,4 @@ function About() {
 }
 
 export default About;
+

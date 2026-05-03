@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import OptimizedImage from "../../components/ui/OptimizedImage";
 
 function GalleryItem({ item }) {
@@ -34,3 +34,4 @@ function GalleryItem({ item }) {
 }
 
 export default GalleryItem;
+

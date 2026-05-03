@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
@@ -229,3 +229,4 @@ function Hero() {
 }
 
 export default Hero;
+
